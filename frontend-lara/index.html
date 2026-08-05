@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>Control de stock | Lara Pastelería</title>
+
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Menú lateral -->
+      <aside class="sidebar">
+        <div class="sidebar__brand">
+          <img
+            src="./assets/images/logo-lara.jpg"
+            alt="Logo de Lara Pastelería"
+            class="sidebar__logo"
+          />
+        </div>
+
+        <nav class="sidebar__nav" aria-label="Navegación principal">
+          <button class="nav-link nav-link--active" type="button">
+            <span class="nav-link__icon">⌂</span>
+            Inicio
+          </button>
+
+          <button class="nav-link" type="button">
+            <span class="nav-link__icon">▣</span>
+            Insumos
+          </button>
+        </nav>
+
+        <div class="sidebar__message">
+          <span class="sidebar__message-icon">☕</span>
+
+          <p>
+            Que tu día esté tan dulce como tus creaciones.
+          </p>
+        </div>
+      </aside>
+
+      <!-- Contenido principal -->
+      <main class="main-content">
+        <!-- Encabezado -->
+        <header class="header">
+          <div>
+            <h1 class="header__title">¡Hola, Lara! 👋</h1>
+
+            <p class="header__subtitle">
+              Bienvenida a tu control de stock
+            </p>
+          </div>
+
+          <button class="user-menu" type="button">
+            <span class="user-menu__avatar">L</span>
+            <span>Lara</span>
+            <span aria-hidden="true">⌄</span>
+          </button>
+        </header>
+
+        <!-- Tarjetas de resumen -->
+        <section
+          class="summary"
+          aria-label="Resumen del stock"
+        >
+          <article class="summary-card">
+            <div class="summary-card__icon summary-card__icon--green">
+              📦
+            </div>
+
+            <div>
+              <p class="summary-card__label">Insumos totales</p>
+              <strong class="summary-card__value" id="total-insumos">
+                0
+              </strong>
+            </div>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-card__icon summary-card__icon--yellow">
+              🔔
+            </div>
+
+            <div>
+              <p class="summary-card__label">Stock bajo</p>
+              <strong class="summary-card__value" id="total-stock-bajo">
+                0
+              </strong>
+            </div>
+          </article>
+
+          <article class="summary-card">
+            <div class="summary-card__icon summary-card__icon--coral">
+              ✕
+            </div>
+
+            <div>
+              <p class="summary-card__label">Sin stock</p>
+              <strong class="summary-card__value" id="total-sin-stock">
+                0
+              </strong>
+            </div>
+          </article>
+        </section>
+
+        <!-- Sección de insumos -->
+        <section class="inventory">
+          <div class="inventory__heading">
+            <div>
+              <h2 class="inventory__title">Insumos</h2>
+
+              <p class="inventory__description">
+                Administrá todos los ingredientes de tu pastelería.
+              </p>
+            </div>
+          </div>
+
+          <!-- Buscador, filtro y botón -->
+          <div class="inventory__tools">
+            <div class="search">
+              <label class="sr-only" for="buscador">
+                Buscar insumo
+              </label>
+
+              <span class="search__icon" aria-hidden="true">⌕</span>
+
+              <input
+                class="search__input"
+                type="search"
+                id="buscador"
+                placeholder="Buscar insumo..."
+              />
+            </div>
+
+            <div class="filter">
+              <label class="sr-only" for="filtro-categoria">
+                Filtrar por categoría
+              </label>
+
+              <select
+                class="filter__select"
+                id="filtro-categoria"
+              >
+                <option value="todas">Todas las categorías</option>
+                <option value="Refrigerados">Refrigerados</option>
+                <option value="Endulzantes">Endulzantes</option>
+                <option value="Almacén">Almacén</option>
+                <option value="Harinas y féculas">
+                  Harinas y féculas
+                </option>
+                <option value="Frutos secos">Frutos secos</option>
+                <option value="Cereales y semillas">
+                  Cereales y semillas
+                </option>
+                <option value="Frutas secas">Frutas secas</option>
+                <option value="Leudantes y especias">
+                  Leudantes y especias
+                </option>
+                <option value="Chocolates y cacao">
+                  Chocolates y cacao
+                </option>
+                <option value="Saborizantes">Saborizantes</option>
+                <option value="Dulces y rellenos">
+                  Dulces y rellenos
+                </option>
+                <option value="Suplementos">Suplementos</option>
+                <option value="Congelados">Congelados</option>
+              </select>
+            </div>
+
+            <button
+              class="button button--primary"
+              id="abrir-modal"
+              type="button"
+            >
+              <span aria-hidden="true">＋</span>
+              Agregar insumo
+            </button>
+          </div>
+
+          <!-- Tabla -->
+          <div class="table-container">
+            <table class="inventory-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Cantidad</th>
+                  <th>Unidad</th>
+                  <th>Stock mín.</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+
+              <tbody id="lista-insumos">
+                <!-- JavaScript agregará las filas acá -->
+              </tbody>
+            </table>
+
+            <p class="empty-message" id="mensaje-vacio" hidden>
+              No se encontraron insumos.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Fondo oscuro del modal -->
+    <div class="modal" id="modal-insumo" aria-hidden="true">
+      <div class="modal__backdrop" data-cerrar-modal></div>
+
+      <section
+        class="modal__content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="titulo-modal"
+      >
+        <button
+          class="modal__close"
+          type="button"
+          aria-label="Cerrar formulario"
+          data-cerrar-modal
+        >
+          ×
+        </button>
+
+        <div class="modal__header">
+          <h2 id="titulo-modal">Agregar insumo</h2>
+
+          <p>Completá los datos del nuevo insumo.</p>
+        </div>
+
+        <form class="form" id="form-insumo">
+          <input type="hidden" id="insumo-id" />
+
+          <div class="form__group">
+            <label for="nombre">Nombre</label>
+
+            <input
+              type="text"
+              id="nombre"
+              name="nombre"
+              placeholder="Ej. Harina 000"
+              required
+            />
+          </div>
+
+          <div class="form__group">
+            <label for="categoria">Categoría</label>
+
+            <select
+              id="categoria"
+              name="categoria"
+              required
+            >
+              <option value="">Seleccionar categoría</option>
+              <option value="Refrigerados">Refrigerados</option>
+              <option value="Endulzantes">Endulzantes</option>
+              <option value="Almacén">Almacén</option>
+              <option value="Harinas y féculas">
+                Harinas y féculas
+              </option>
+              <option value="Frutos secos">Frutos secos</option>
+              <option value="Cereales y semillas">
+                Cereales y semillas
+              </option>
+              <option value="Frutas secas">Frutas secas</option>
+              <option value="Leudantes y especias">
+                Leudantes y especias
+              </option>
+              <option value="Chocolates y cacao">
+                Chocolates y cacao
+              </option>
+              <option value="Saborizantes">Saborizantes</option>
+              <option value="Dulces y rellenos">
+                Dulces y rellenos
+              </option>
+              <option value="Suplementos">Suplementos</option>
+              <option value="Congelados">Congelados</option>
+            </select>
+          </div>
+
+          <div class="form__row">
+            <div class="form__group">
+              <label for="cantidad">Cantidad</label>
+
+              <input
+                type="number"
+                id="cantidad"
+                name="cantidad"
+                min="0"
+                step="0.01"
+                placeholder="Ej. 5"
+                required
+              />
+            </div>
+
+            <div class="form__group">
+              <label for="unidad">Unidad</label>
+
+              <select id="unidad" name="unidad" required>
+                <option value="">Seleccionar unidad</option>
+                <option value="kg">kg</option>
+                <option value="litros">litros</option>
+                <option value="unidades">unidades</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form__group">
+            <label for="stock-minimo">Stock mínimo</label>
+
+            <input
+              type="number"
+              id="stock-minimo"
+              name="stockMinimo"
+              min="0"
+              step="0.01"
+              placeholder="Ej. 2"
+              required
+            />
+          </div>
+
+          <div class="form__actions">
+            <button
+              class="button button--secondary"
+              type="button"
+              data-cerrar-modal
+            >
+              Cancelar
+            </button>
+
+            <button
+              class="button button--primary"
+              type="submit"
+            >
+              Guardar insumo
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <script src="./js/app.js"></script>
+  </body>
+</html>
