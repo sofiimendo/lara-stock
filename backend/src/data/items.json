@@ -1,0 +1,412 @@
+[
+    {
+        "id": "553ba461-fc57-47be-82bb-f98433184596",
+        "nombre": "Huevos",
+        "categoria": "Refrigerados",
+        "cantidad": 0,
+        "unidad": "unidades",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "b03cc4d2-170e-4b59-accf-3a9ccb85a169",
+        "nombre": "Miel",
+        "categoria": "Endulzantes",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "d69c80d6-e88e-4ad3-8325-2417daa77035",
+        "nombre": "Leche",
+        "categoria": "Refrigerados",
+        "cantidad": 0,
+        "unidad": "litros",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "ba923fbb-ae32-4d2a-b6fe-f061b333c270",
+        "nombre": "Ricota",
+        "categoria": "Refrigerados",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "2695f9a3-cdf3-452d-8196-dfe064c9127d",
+        "nombre": "Edulcorante",
+        "categoria": "Endulzantes",
+        "cantidad": 0,
+        "unidad": "litros",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "3c0df6a9-e7bd-40b0-b78a-37fb69ec95f2",
+        "nombre": "Café",
+        "categoria": "Almacén",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "b3ba22d7-b73b-4e80-b766-de0e5dacbea9",
+        "nombre": "Azúcar blanca",
+        "categoria": "Endulzantes",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "12f06b57-f57a-46d0-9e67-f448fbaccd84",
+        "nombre": "Azúcar mascabo",
+        "categoria": "Endulzantes",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "7c628c1b-204b-4410-b5d2-f8ddd9005cd1",
+        "nombre": "Harina 0000",
+        "categoria": "Harinas y féculas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "1421d7be-0cba-4e1a-af1c-80dcbc2b0264",
+        "nombre": "Harina integral",
+        "categoria": "Harinas y féculas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "219a9df9-4f48-4370-87e9-7ed3d9cb642f",
+        "nombre": "Avena",
+        "categoria": "Harinas y féculas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "44a72463-fa2d-4bbb-8286-22f3ad3ed079",
+        "nombre": "Nuez",
+        "categoria": "Frutos secos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "61f49a10-3642-4a83-b007-4ff578822766",
+        "nombre": "Almendra",
+        "categoria": "Frutos secos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "1e66622d-8059-43b6-b28a-55ce6be938c2",
+        "nombre": "Maní",
+        "categoria": "Frutos secos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "0e6d678d-005a-42e7-a4d3-6d3370b3536f",
+        "nombre": "Quinoa pop",
+        "categoria": "Cereales y semillas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "5cf33d1d-9cb2-494f-a834-215d7f376979",
+        "nombre": "Soja texturizada",
+        "categoria": "Cereales y semillas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "cb2e6baf-cebf-4d1b-aab2-1ea8ce2fbb7c",
+        "nombre": "Dátil",
+        "categoria": "Frutas secas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "b1825802-b569-4010-bbf8-2c657de64500",
+        "nombre": "Fécula de mandioca",
+        "categoria": "Harinas y féculas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "36aab371-3e03-41fe-904c-a7d7bed1b0a8",
+        "nombre": "Fécula de maíz",
+        "categoria": "Harinas y féculas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "9478a779-c709-464d-9575-0a5633f515ef",
+        "nombre": "Levadura",
+        "categoria": "Leudantes y especias",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "ad0b8428-906f-4827-97b9-30a3dfef3734",
+        "nombre": "Canela",
+        "categoria": "Leudantes y especias",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "e74c23cf-dd8e-4d82-bcce-4eafb443ee8a",
+        "nombre": "Polvo de hornear",
+        "categoria": "Leudantes y especias",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "bb11c832-c96d-4422-a534-ab2bb03cf812",
+        "nombre": "Chocolate semiamargo",
+        "categoria": "Chocolates y cacao",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "cc6292f5-24bf-4d5e-ab03-c9de4d501b8f",
+        "nombre": "Chocolate blanco",
+        "categoria": "Chocolates y cacao",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "58d1dfe3-ba1e-422e-9366-44b3cc4d703f",
+        "nombre": "Cacao amargo",
+        "categoria": "Chocolates y cacao",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "3e84189c-c456-463c-9018-84f6e0d90633",
+        "nombre": "Sal",
+        "categoria": "Almacén",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "28785c0f-8a54-4f21-94f5-57b275021340",
+        "nombre": "Esencia de vainilla",
+        "categoria": "Saborizantes",
+        "cantidad": 0,
+        "unidad": "litros",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "96b8707f-4b5c-47c9-a98c-eece50c76fe3",
+        "nombre": "Mantequilla de maní",
+        "categoria": "Frutos secos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "46d9c5e4-f018-45b6-8fcc-7e4358a9fcb3",
+        "nombre": "Aceite",
+        "categoria": "Almacén",
+        "cantidad": 0,
+        "unidad": "litros",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "97153394-86de-4ed9-a729-2b3ab89bd104",
+        "nombre": "Coco rallado",
+        "categoria": "Frutas secas",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "05e65e7e-25dd-414d-8ead-18a9e64ba323",
+        "nombre": "Dulce de leche repostero",
+        "categoria": "Dulces y rellenos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "43bf5567-5f2b-4b5e-81fa-c343dbe0a200",
+        "nombre": "Dulce de leche sin azúcar",
+        "categoria": "Dulces y rellenos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "9479b16a-a127-467d-8d97-dc9471b6abe4",
+        "nombre": "Queso crema",
+        "categoria": "Refrigerados",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "54269f2b-2186-4008-9dc4-6c7c8f6fb28c",
+        "nombre": "Crema de leche",
+        "categoria": "Refrigerados",
+        "cantidad": 0,
+        "unidad": "litros",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "9affe553-354f-41e2-a4ce-f066931b7144",
+        "nombre": "Yogurt griego",
+        "categoria": "Refrigerados",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "06b64dff-a57e-494b-9e61-768de89157a1",
+        "nombre": "Batata",
+        "categoria": "Dulces y rellenos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "c5314a34-5376-4d41-beda-45475d8d592b",
+        "nombre": "Membrillo",
+        "categoria": "Dulces y rellenos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "ce3f426e-376a-4c3d-a6d3-532058bd97b2",
+        "nombre": "Whey protein",
+        "categoria": "Suplementos",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "0919b9fd-3c0c-45bb-92bf-fc0cb88fee0f",
+        "nombre": "Hielo",
+        "categoria": "Congelados",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "07565dda-be6c-4aa8-bc3b-bf7816fb97c8",
+        "nombre": "Frutos rojos congelados",
+        "categoria": "Congelados",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "9a56c26f-ea1c-4230-93b5-35f75a3a847d",
+        "nombre": "Frutillas congeladas",
+        "categoria": "Congelados",
+        "cantidad": 0,
+        "unidad": "kg",
+        "stockMinimo": 1,
+        "createdAt": "2026-08-03T00:00:00.000Z",
+        "updatedAt": "2026-08-03T00:00:00.000Z"
+    }
+]
