@@ -2,6 +2,9 @@ const API_URL = "http://localhost:4000/api/items";
 const SUMMARY_URL = `${API_URL}/resumen`;
 
 let insumos = [];
+let temporizadorBusqueda;
+let toastTimer;
+let idPendienteDeEliminacion = null;
 
 const listaInsumos = document.querySelector("#lista-insumos");
 const mensajeVacio = document.querySelector("#mensaje-vacio");
@@ -9,13 +12,24 @@ const mensajeVacio = document.querySelector("#mensaje-vacio");
 const buscador = document.querySelector("#buscador");
 const filtroCategoria = document.querySelector("#filtro-categoria");
 
+const botonInicio = document.querySelector("#nav-inicio");
+const botonInsumos = document.querySelector("#nav-insumos");
+const seccionInsumos = document.querySelector("#seccion-insumos");
+
+const cardTotal = document.querySelector("#card-total");
+const cardStockBajo = document.querySelector("#card-stock-bajo");
+const cardSinStock = document.querySelector("#card-sin-stock");
+
 const totalInsumos = document.querySelector("#total-insumos");
 const totalStockBajo = document.querySelector("#total-stock-bajo");
 const totalSinStock = document.querySelector("#total-sin-stock");
 
 const modal = document.querySelector("#modal-insumo");
 const botonAbrirModal = document.querySelector("#abrir-modal");
-const botonesCerrarModal = document.querySelectorAll("[data-cerrar-modal]");
+
+const botonesCerrarModal = document.querySelectorAll(
+  "[data-cerrar-modal]"
+);
 
 const formulario = document.querySelector("#form-insumo");
 const tituloModal = document.querySelector("#titulo-modal");
@@ -27,17 +41,110 @@ const inputCantidad = document.querySelector("#cantidad");
 const inputUnidad = document.querySelector("#unidad");
 const inputStockMinimo = document.querySelector("#stock-minimo");
 
-async function cargarInsumos() {
+const modalEliminar = document.querySelector("#modal-eliminar");
+
+const botonesCerrarEliminar = document.querySelectorAll(
+  "[data-cerrar-eliminar]"
+);
+
+const botonConfirmarEliminar = document.querySelector(
+  "#confirmar-eliminar"
+);
+
+const nombreInsumoEliminar = document.querySelector(
+  "#nombre-insumo-eliminar"
+);
+
+const toast = document.querySelector("#toast");
+const toastIcon = document.querySelector("#toast-icon");
+const toastMessage = document.querySelector("#toast-message");
+
+function mostrarToast(mensaje, tipo = "success") {
+  clearTimeout(toastTimer);
+
+  toastMessage.textContent = mensaje;
+  toastIcon.textContent = tipo === "success" ? "✅" : "⚠️";
+
+  toast.classList.remove(
+    "toast--success",
+    "toast--error",
+    "toast--visible"
+  );
+
+  toast.classList.add(
+    tipo === "success"
+      ? "toast--success"
+      : "toast--error",
+    "toast--visible"
+  );
+
+  toast.setAttribute("aria-hidden", "false");
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("toast--visible");
+    toast.setAttribute("aria-hidden", "true");
+  }, 3000);
+}
+
+function actualizarPasoCampos() {
+  const esUnidad = inputUnidad.value === "unidades";
+  const paso = esUnidad ? "1" : "0.01";
+
+  inputCantidad.step = paso;
+  inputStockMinimo.step = paso;
+}
+
+function limpiarTarjetasActivas() {
+  [cardTotal, cardStockBajo, cardSinStock].forEach((card) => {
+    card.classList.remove("summary-card--active");
+  });
+}
+
+function activarTarjeta(cardActiva) {
+  limpiarTarjetasActivas();
+  cardActiva.classList.add("summary-card--active");
+}
+
+async function cargarInsumos(filtros = {}) {
   try {
-    const respuesta = await fetch(API_URL);
+    const parametros = new URLSearchParams();
+
+    if (filtros.nombre) {
+      parametros.append("nombre", filtros.nombre);
+    }
+
+    if (
+      filtros.categoria &&
+      filtros.categoria !== "todas"
+    ) {
+      parametros.append(
+        "categoria",
+        filtros.categoria
+      );
+    }
+
+    if (filtros.stock) {
+      parametros.append("stock", filtros.stock);
+    }
+
+    const queryString = parametros.toString();
+
+    const url = queryString
+      ? `${API_URL}?${queryString}`
+      : API_URL;
+
+    const respuesta = await fetch(url);
 
     if (!respuesta.ok) {
-      throw new Error("No se pudieron obtener los insumos");
+      throw new Error(
+        "No se pudieron obtener los insumos"
+      );
     }
 
     insumos = await respuesta.json();
 
-    await actualizarInterfaz();
+    renderizarInsumos(insumos);
+    await actualizarResumen();
   } catch (error) {
     console.error(error);
 
@@ -48,6 +155,11 @@ async function cargarInsumos() {
         </td>
       </tr>
     `;
+
+    mostrarToast(
+      "No se pudo conectar con el servidor",
+      "error"
+    );
   }
 }
 
@@ -56,7 +168,9 @@ async function actualizarResumen() {
     const respuesta = await fetch(SUMMARY_URL);
 
     if (!respuesta.ok) {
-      throw new Error("No se pudo obtener el resumen del stock");
+      throw new Error(
+        "No se pudo obtener el resumen del stock"
+      );
     }
 
     const resumen = await respuesta.json();
@@ -177,23 +291,97 @@ function renderizarInsumos(lista) {
   });
 }
 
-function filtrarInsumos() {
-  const textoBuscado = buscador.value.toLowerCase().trim();
-  const categoriaSeleccionada = filtroCategoria.value;
+async function filtrarInsumos() {
+  const nombre = buscador.value.trim();
+  const categoria = filtroCategoria.value;
 
-  const resultado = insumos.filter((insumo) => {
-    const coincideNombre = insumo.nombre
-      .toLowerCase()
-      .includes(textoBuscado);
+  limpiarTarjetasActivas();
 
-    const coincideCategoria =
-      categoriaSeleccionada === "todas" ||
-      insumo.categoria === categoriaSeleccionada;
+  await cargarInsumos({
+    nombre,
+    categoria,
+  });
+}
 
-    return coincideNombre && coincideCategoria;
+function activarMenu(botonActivo) {
+  botonInicio.classList.remove("nav-link--active");
+  botonInsumos.classList.remove("nav-link--active");
+
+  botonActivo.classList.add("nav-link--active");
+}
+
+async function mostrarTodosLosInsumos() {
+  buscador.value = "";
+  filtroCategoria.value = "todas";
+
+  activarTarjeta(cardTotal);
+  activarMenu(botonInsumos);
+
+  await cargarInsumos();
+
+  seccionInsumos.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+async function mostrarStockBajo() {
+  buscador.value = "";
+  filtroCategoria.value = "todas";
+
+  activarTarjeta(cardStockBajo);
+  activarMenu(botonInsumos);
+
+  await cargarInsumos({
+    stock: "bajo",
   });
 
-  renderizarInsumos(resultado);
+  seccionInsumos.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+async function mostrarSinStock() {
+  buscador.value = "";
+  filtroCategoria.value = "todas";
+
+  activarTarjeta(cardSinStock);
+  activarMenu(botonInsumos);
+
+  await cargarInsumos({
+    stock: "agotado",
+  });
+
+  seccionInsumos.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+async function volverAlInicio() {
+  buscador.value = "";
+  filtroCategoria.value = "todas";
+
+  limpiarTarjetasActivas();
+
+  await cargarInsumos();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+
+  activarMenu(botonInicio);
+}
+
+function irAInsumos() {
+  seccionInsumos.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+
+  activarMenu(botonInsumos);
 }
 
 function abrirModal(insumo = null) {
@@ -213,6 +401,8 @@ function abrirModal(insumo = null) {
     tituloModal.textContent = "Agregar insumo";
   }
 
+  actualizarPasoCampos();
+
   modal.classList.add("modal--open");
   modal.setAttribute("aria-hidden", "false");
 
@@ -225,6 +415,48 @@ function cerrarModal() {
 
   formulario.reset();
   inputId.value = "";
+}
+
+function abrirModalEliminar(id) {
+  const insumoEncontrado = insumos.find(
+    (insumo) =>
+      String(insumo.id) === String(id)
+  );
+
+  if (!insumoEncontrado) {
+    mostrarToast(
+      "No se encontró el insumo seleccionado",
+      "error"
+    );
+
+    return;
+  }
+
+  idPendienteDeEliminacion = insumoEncontrado.id;
+
+  nombreInsumoEliminar.textContent =
+    `"${insumoEncontrado.nombre}"`;
+
+  modalEliminar.classList.add("modal--open");
+
+  modalEliminar.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  botonConfirmarEliminar.focus();
+}
+
+function cerrarModalEliminar() {
+  modalEliminar.classList.remove("modal--open");
+
+  modalEliminar.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  idPendienteDeEliminacion = null;
+  nombreInsumoEliminar.textContent = "";
 }
 
 async function guardarInsumo(evento) {
@@ -262,9 +494,10 @@ async function guardarInsumo(evento) {
     const resultado = await respuesta.json();
 
     if (!respuesta.ok) {
-      const mensajesValidacion = resultado.errores
-        ?.map((error) => error.mensaje)
-        .join("\n");
+      const mensajesValidacion =
+        resultado.errores
+          ?.map((error) => error.mensaje)
+          .join("\n");
 
       throw new Error(
         mensajesValidacion ||
@@ -275,23 +508,23 @@ async function guardarInsumo(evento) {
 
     cerrarModal();
 
-    await cargarInsumos();
+    await filtrarInsumos();
 
-    window.alert(
+    mostrarToast(
       estaEditando
         ? "Insumo actualizado correctamente"
         : "Insumo agregado correctamente"
     );
   } catch (error) {
     console.error(error);
-
-    window.alert(error.message);
+    mostrarToast(error.message, "error");
   }
 }
 
 function editarInsumo(id) {
   const insumoEncontrado = insumos.find(
-    (insumo) => String(insumo.id) === String(id)
+    (insumo) =>
+      String(insumo.id) === String(id)
   );
 
   if (insumoEncontrado) {
@@ -299,27 +532,23 @@ function editarInsumo(id) {
   }
 }
 
-async function eliminarInsumo(id) {
-  const insumoEncontrado = insumos.find(
-    (insumo) => String(insumo.id) === String(id)
-  );
-
-  if (!insumoEncontrado) {
+async function confirmarEliminacion() {
+  if (!idPendienteDeEliminacion) {
     return;
   }
 
-  const confirmar = window.confirm(
-    `¿Querés eliminar el insumo "${insumoEncontrado.nombre}"?`
-  );
-
-  if (!confirmar) {
-    return;
-  }
+  const id = idPendienteDeEliminacion;
 
   try {
-    const respuesta = await fetch(`${API_URL}/${id}`, {
-      method: "DELETE",
-    });
+    botonConfirmarEliminar.disabled = true;
+    botonConfirmarEliminar.textContent = "Eliminando...";
+
+    const respuesta = await fetch(
+      `${API_URL}/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
 
     const resultado = await respuesta.json();
 
@@ -330,63 +559,141 @@ async function eliminarInsumo(id) {
       );
     }
 
-    await cargarInsumos();
+    cerrarModalEliminar();
 
-    window.alert("Insumo eliminado correctamente");
+    await filtrarInsumos();
+
+    mostrarToast(
+      "Insumo eliminado correctamente"
+    );
   } catch (error) {
     console.error(error);
-
-    window.alert(error.message);
+    mostrarToast(error.message, "error");
+  } finally {
+    botonConfirmarEliminar.disabled = false;
+    botonConfirmarEliminar.textContent = "Eliminar";
   }
 }
 
-async function actualizarInterfaz() {
-  await actualizarResumen();
-  filtrarInsumos();
-}
+botonInicio.addEventListener(
+  "click",
+  volverAlInicio
+);
+
+botonInsumos.addEventListener(
+  "click",
+  irAInsumos
+);
+
+cardTotal.addEventListener(
+  "click",
+  mostrarTodosLosInsumos
+);
+
+cardStockBajo.addEventListener(
+  "click",
+  mostrarStockBajo
+);
+
+cardSinStock.addEventListener(
+  "click",
+  mostrarSinStock
+);
 
 botonAbrirModal.addEventListener("click", () => {
   abrirModal();
 });
 
 botonesCerrarModal.forEach((boton) => {
-  boton.addEventListener("click", cerrarModal);
+  boton.addEventListener(
+    "click",
+    cerrarModal
+  );
 });
 
-formulario.addEventListener("submit", guardarInsumo);
+botonesCerrarEliminar.forEach((boton) => {
+  boton.addEventListener(
+    "click",
+    cerrarModalEliminar
+  );
+});
 
-buscador.addEventListener("input", filtrarInsumos);
+botonConfirmarEliminar.addEventListener(
+  "click",
+  confirmarEliminacion
+);
+
+formulario.addEventListener(
+  "submit",
+  guardarInsumo
+);
+
+inputUnidad.addEventListener(
+  "change",
+  actualizarPasoCampos
+);
+
+buscador.addEventListener("input", () => {
+  clearTimeout(temporizadorBusqueda);
+
+  temporizadorBusqueda = setTimeout(() => {
+    filtrarInsumos();
+  }, 300);
+});
 
 filtroCategoria.addEventListener(
   "change",
   filtrarInsumos
 );
 
-listaInsumos.addEventListener("click", (evento) => {
-  const botonEditar = evento.target.closest(
-    "[data-editar]"
-  );
+listaInsumos.addEventListener(
+  "click",
+  (evento) => {
+    const botonEditar = evento.target.closest(
+      "[data-editar]"
+    );
 
-  const botonEliminar = evento.target.closest(
-    "[data-eliminar]"
-  );
+    const botonEliminar =
+      evento.target.closest(
+        "[data-eliminar]"
+      );
 
-  if (botonEditar) {
-    editarInsumo(botonEditar.dataset.editar);
+    if (botonEditar) {
+      editarInsumo(
+        botonEditar.dataset.editar
+      );
+    }
+
+    if (botonEliminar) {
+      abrirModalEliminar(
+        botonEliminar.dataset.eliminar
+      );
+    }
   }
+);
 
-  if (botonEliminar) {
-    eliminarInsumo(botonEliminar.dataset.eliminar);
-  }
-});
+document.addEventListener(
+  "keydown",
+  (evento) => {
+    if (evento.key !== "Escape") {
+      return;
+    }
 
-document.addEventListener("keydown", (evento) => {
-  if (
-    evento.key === "Escape" &&
-    modal.classList.contains("modal--open")
-  ) {
-    cerrarModal();
+    if (
+      modalEliminar.classList.contains(
+        "modal--open"
+      )
+    ) {
+      cerrarModalEliminar();
+      return;
+    }
+
+    if (
+      modal.classList.contains("modal--open")
+    ) {
+      cerrarModal();
+    }
   }
-});
+);
 
 cargarInsumos();

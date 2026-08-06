@@ -25,6 +25,7 @@ const getAllItems = (filters = {}) => {
         const matchesStock =
             !stock ||
             (stock.toLowerCase() === "bajo" &&
+                item.cantidad > 0 &&
                 item.cantidad <= item.stockMinimo) ||
             (stock.toLowerCase() === "disponible" &&
                 item.cantidad > item.stockMinimo) ||

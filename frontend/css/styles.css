@@ -902,3 +902,110 @@ img {
     border-radius: var(--radio-mediano);
   }
 }
+.toast {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  min-width: 18rem;
+  max-width: 25rem;
+  padding: 1rem 1.25rem;
+
+  color: #174f3d;
+  background-color: #ffffff;
+  border: 1px solid rgba(23, 79, 61, 0.18);
+  border-radius: 0.9rem;
+  box-shadow: 0 1rem 2.5rem rgba(41, 35, 29, 0.18);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(1rem);
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease,
+    transform 0.25s ease;
+}
+
+.toast--visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.toast--success {
+  border-left: 0.35rem solid #1d7a5a;
+}
+
+.toast--error {
+  color: #8e3333;
+  border-left: 0.35rem solid #d75b5b;
+}
+
+.toast__icon {
+  flex-shrink: 0;
+  font-size: 1.25rem;
+}
+
+.toast__message {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .toast {
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+
+    min-width: 0;
+    max-width: none;
+  }
+}
+.modal__content--small {
+  max-width: 28rem;
+}
+
+.delete-message {
+  margin: 1.5rem 0;
+  color: var(--color-texto);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.button--danger {
+  color: #fff;
+
+  background: #d9534f;
+  border: none;
+}
+
+.button--danger:hover {
+  background: #c9302c;
+}
+.summary-card {
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(23, 107, 77, 0.35);
+}
+
+.summary-card--active {
+  border-color: var(--color-verde);
+  box-shadow:
+    0 0 0 3px rgba(23, 107, 77, 0.1),
+    var(--sombra-suave);
+}
