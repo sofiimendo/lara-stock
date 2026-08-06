@@ -30,16 +30,6 @@
         "updatedAt": "2026-08-03T00:00:00.000Z"
     },
     {
-        "id": "ba923fbb-ae32-4d2a-b6fe-f061b333c270",
-        "nombre": "Ricota",
-        "categoria": "Refrigerados",
-        "cantidad": 0,
-        "unidad": "kg",
-        "stockMinimo": 1,
-        "createdAt": "2026-08-03T00:00:00.000Z",
-        "updatedAt": "2026-08-03T00:00:00.000Z"
-    },
-    {
         "id": "2695f9a3-cdf3-452d-8196-dfe064c9127d",
         "nombre": "Edulcorante",
         "categoria": "Endulzantes",
@@ -408,5 +398,15 @@
         "stockMinimo": 1,
         "createdAt": "2026-08-03T00:00:00.000Z",
         "updatedAt": "2026-08-03T00:00:00.000Z"
+    },
+    {
+        "id": "30cd3b5d-b288-4c32-8d70-456d056e723c",
+        "nombre": "Manteca",
+        "categoria": "Refrigerados",
+        "cantidad": 2,
+        "unidad": "kg",
+        "stockMinimo": 2,
+        "createdAt": "2026-08-06T00:38:35.749Z",
+        "updatedAt": "2026-08-06T00:39:16.650Z"
     }
 ]
