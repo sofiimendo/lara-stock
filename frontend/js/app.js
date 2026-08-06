@@ -1,45 +1,7 @@
-const insumos = [
-  {
-    id: 1,
-    nombre: "Harina 000",
-    categoria: "Harinas y féculas",
-    cantidad: 12,
-    unidad: "kg",
-    stockMinimo: 5,
-  },
-  {
-    id: 2,
-    nombre: "Chocolate semiamargo",
-    categoria: "Chocolates y cacao",
-    cantidad: 3,
-    unidad: "kg",
-    stockMinimo: 4,
-  },
-  {
-    id: 3,
-    nombre: "Crema de leche",
-    categoria: "Refrigerados",
-    cantidad: 0,
-    unidad: "litros",
-    stockMinimo: 2,
-  },
-  {
-    id: 4,
-    nombre: "Nueces",
-    categoria: "Frutos secos",
-    cantidad: 8,
-    unidad: "kg",
-    stockMinimo: 3,
-  },
-  {
-    id: 5,
-    nombre: "Esencia de vainilla",
-    categoria: "Saborizantes",
-    cantidad: 6,
-    unidad: "unidades",
-    stockMinimo: 2,
-  },
-];
+const API_URL = "http://localhost:4000/api/items";
+const SUMMARY_URL = `${API_URL}/resumen`;
+
+let insumos = [];
 
 const listaInsumos = document.querySelector("#lista-insumos");
 const mensajeVacio = document.querySelector("#mensaje-vacio");
@@ -64,6 +26,52 @@ const inputCategoria = document.querySelector("#categoria");
 const inputCantidad = document.querySelector("#cantidad");
 const inputUnidad = document.querySelector("#unidad");
 const inputStockMinimo = document.querySelector("#stock-minimo");
+
+async function cargarInsumos() {
+  try {
+    const respuesta = await fetch(API_URL);
+
+    if (!respuesta.ok) {
+      throw new Error("No se pudieron obtener los insumos");
+    }
+
+    insumos = await respuesta.json();
+
+    await actualizarInterfaz();
+  } catch (error) {
+    console.error(error);
+
+    listaInsumos.innerHTML = `
+      <tr>
+        <td colspan="7">
+          No se pudo cargar el stock. Revisá que el servidor esté funcionando.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+async function actualizarResumen() {
+  try {
+    const respuesta = await fetch(SUMMARY_URL);
+
+    if (!respuesta.ok) {
+      throw new Error("No se pudo obtener el resumen del stock");
+    }
+
+    const resumen = await respuesta.json();
+
+    totalInsumos.textContent = resumen.totalInsumos;
+    totalStockBajo.textContent = resumen.stockBajo;
+    totalSinStock.textContent = resumen.sinStock;
+  } catch (error) {
+    console.error(error);
+
+    totalInsumos.textContent = "—";
+    totalStockBajo.textContent = "—";
+    totalSinStock.textContent = "—";
+  }
+}
 
 function obtenerEstado(insumo) {
   if (insumo.cantidad === 0) {
@@ -121,7 +129,9 @@ function renderizarInsumos(lista) {
     const fila = document.createElement("tr");
 
     fila.innerHTML = `
-      <td><strong>${insumo.nombre}</strong></td>
+      <td>
+        <strong>${insumo.nombre}</strong>
+      </td>
 
       <td>
         <span class="category-badge">
@@ -165,22 +175,6 @@ function renderizarInsumos(lista) {
 
     listaInsumos.appendChild(fila);
   });
-}
-
-function actualizarResumen() {
-  const cantidadStockBajo = insumos.filter(
-    (insumo) =>
-      insumo.cantidad > 0 &&
-      insumo.cantidad <= insumo.stockMinimo
-  ).length;
-
-  const cantidadSinStock = insumos.filter(
-    (insumo) => insumo.cantidad === 0
-  ).length;
-
-  totalInsumos.textContent = insumos.length;
-  totalStockBajo.textContent = cantidadStockBajo;
-  totalSinStock.textContent = cantidadSinStock;
 }
 
 function filtrarInsumos() {
@@ -233,13 +227,12 @@ function cerrarModal() {
   inputId.value = "";
 }
 
-function guardarInsumo(evento) {
+async function guardarInsumo(evento) {
   evento.preventDefault();
 
-  const nuevoInsumo = {
-    id: inputId.value
-      ? Number(inputId.value)
-      : Date.now(),
+  const id = inputId.value;
+
+  const datosInsumo = {
     nombre: inputNombre.value.trim(),
     categoria: inputCategoria.value,
     cantidad: Number(inputCantidad.value),
@@ -247,23 +240,58 @@ function guardarInsumo(evento) {
     stockMinimo: Number(inputStockMinimo.value),
   };
 
-  const indice = insumos.findIndex(
-    (insumo) => insumo.id === nuevoInsumo.id
-  );
+  const estaEditando = Boolean(id);
 
-  if (indice !== -1) {
-    insumos[indice] = nuevoInsumo;
-  } else {
-    insumos.push(nuevoInsumo);
+  const url = estaEditando
+    ? `${API_URL}/${id}`
+    : API_URL;
+
+  const metodo = estaEditando
+    ? "PUT"
+    : "POST";
+
+  try {
+    const respuesta = await fetch(url, {
+      method: metodo,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datosInsumo),
+    });
+
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok) {
+      const mensajesValidacion = resultado.errores
+        ?.map((error) => error.mensaje)
+        .join("\n");
+
+      throw new Error(
+        mensajesValidacion ||
+          resultado.mensaje ||
+          "No se pudo guardar el insumo"
+      );
+    }
+
+    cerrarModal();
+
+    await cargarInsumos();
+
+    window.alert(
+      estaEditando
+        ? "Insumo actualizado correctamente"
+        : "Insumo agregado correctamente"
+    );
+  } catch (error) {
+    console.error(error);
+
+    window.alert(error.message);
   }
-
-  actualizarInterfaz();
-  cerrarModal();
 }
 
 function editarInsumo(id) {
   const insumoEncontrado = insumos.find(
-    (insumo) => insumo.id === id
+    (insumo) => String(insumo.id) === String(id)
   );
 
   if (insumoEncontrado) {
@@ -271,33 +299,55 @@ function editarInsumo(id) {
   }
 }
 
-function eliminarInsumo(id) {
-  const indice = insumos.findIndex(
-    (insumo) => insumo.id === id
+async function eliminarInsumo(id) {
+  const insumoEncontrado = insumos.find(
+    (insumo) => String(insumo.id) === String(id)
   );
 
-  if (indice === -1) {
+  if (!insumoEncontrado) {
     return;
   }
 
   const confirmar = window.confirm(
-    `¿Querés eliminar el insumo "${insumos[indice].nombre}"?`
+    `¿Querés eliminar el insumo "${insumoEncontrado.nombre}"?`
   );
 
   if (!confirmar) {
     return;
   }
 
-  insumos.splice(indice, 1);
-  actualizarInterfaz();
+  try {
+    const respuesta = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+    });
+
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok) {
+      throw new Error(
+        resultado.mensaje ||
+          "No se pudo eliminar el insumo"
+      );
+    }
+
+    await cargarInsumos();
+
+    window.alert("Insumo eliminado correctamente");
+  } catch (error) {
+    console.error(error);
+
+    window.alert(error.message);
+  }
 }
 
-function actualizarInterfaz() {
-  actualizarResumen();
+async function actualizarInterfaz() {
+  await actualizarResumen();
   filtrarInsumos();
 }
 
-botonAbrirModal.addEventListener("click", () => abrirModal());
+botonAbrirModal.addEventListener("click", () => {
+  abrirModal();
+});
 
 botonesCerrarModal.forEach((boton) => {
   boton.addEventListener("click", cerrarModal);
@@ -306,18 +356,27 @@ botonesCerrarModal.forEach((boton) => {
 formulario.addEventListener("submit", guardarInsumo);
 
 buscador.addEventListener("input", filtrarInsumos);
-filtroCategoria.addEventListener("change", filtrarInsumos);
+
+filtroCategoria.addEventListener(
+  "change",
+  filtrarInsumos
+);
 
 listaInsumos.addEventListener("click", (evento) => {
-  const botonEditar = evento.target.closest("[data-editar]");
-  const botonEliminar = evento.target.closest("[data-eliminar]");
+  const botonEditar = evento.target.closest(
+    "[data-editar]"
+  );
+
+  const botonEliminar = evento.target.closest(
+    "[data-eliminar]"
+  );
 
   if (botonEditar) {
-    editarInsumo(Number(botonEditar.dataset.editar));
+    editarInsumo(botonEditar.dataset.editar);
   }
 
   if (botonEliminar) {
-    eliminarInsumo(Number(botonEliminar.dataset.eliminar));
+    eliminarInsumo(botonEliminar.dataset.eliminar);
   }
 });
 
@@ -330,4 +389,4 @@ document.addEventListener("keydown", (evento) => {
   }
 });
 
-actualizarInterfaz();
+cargarInsumos();
