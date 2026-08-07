@@ -6,5 +6,21 @@
     "cantidad": 2,
     "motivo": "Prueba de producción",
     "fecha": "2026-08-07T20:17:18.624Z"
+  },
+  {
+    "id": "33a959c1-499e-43f5-b51f-320e89763182",
+    "itemId": "553ba461-fc57-47be-82bb-f98433184596",
+    "tipo": "salida",
+    "cantidad": 1,
+    "motivo": "produccion",
+    "fecha": "2026-08-07T20:46:44.362Z"
+  },
+  {
+    "id": "6e91562f-082a-49b0-bb4e-60a215b1d439",
+    "itemId": "553ba461-fc57-47be-82bb-f98433184596",
+    "tipo": "entrada",
+    "cantidad": 5,
+    "motivo": "",
+    "fecha": "2026-08-07T20:49:21.833Z"
   }
 ]

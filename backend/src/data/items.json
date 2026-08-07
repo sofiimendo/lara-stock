@@ -3,11 +3,11 @@
         "id": "553ba461-fc57-47be-82bb-f98433184596",
         "nombre": "Huevos",
         "categoria": "Refrigerados",
-        "cantidad": 3,
+        "cantidad": 7,
         "unidad": "unidades",
         "stockMinimo": 1,
         "createdAt": "2026-08-03T00:00:00.000Z",
-        "updatedAt": "2026-08-07T20:17:18.623Z"
+        "updatedAt": "2026-08-07T20:49:21.833Z"
     },
     {
         "id": "b03cc4d2-170e-4b59-accf-3a9ccb85a169",

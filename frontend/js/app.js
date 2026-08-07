@@ -1,5 +1,6 @@
 const API_URL = "http://localhost:4000/api/items";
 const SUMMARY_URL = `${API_URL}/resumen`;
+const MOVEMENTS_URL = "http://localhost:4000/api/movements";
 
 let insumos = [];
 let temporizadorBusqueda;
@@ -24,6 +25,10 @@ const totalInsumos = document.querySelector("#total-insumos");
 const totalStockBajo = document.querySelector("#total-stock-bajo");
 const totalSinStock = document.querySelector("#total-sin-stock");
 
+// ===============================
+// MODAL AGREGAR / EDITAR
+// ===============================
+
 const modal = document.querySelector("#modal-insumo");
 const botonAbrirModal = document.querySelector("#abrir-modal");
 
@@ -41,6 +46,10 @@ const inputCantidad = document.querySelector("#cantidad");
 const inputUnidad = document.querySelector("#unidad");
 const inputStockMinimo = document.querySelector("#stock-minimo");
 
+// ===============================
+// MODAL ELIMINAR
+// ===============================
+
 const modalEliminar = document.querySelector("#modal-eliminar");
 
 const botonesCerrarEliminar = document.querySelectorAll(
@@ -55,6 +64,56 @@ const nombreInsumoEliminar = document.querySelector(
   "#nombre-insumo-eliminar"
 );
 
+// ===============================
+// MODAL MOVIMIENTOS
+// ===============================
+
+const modalMovimiento = document.querySelector("#modal-movimiento");
+
+const botonesCerrarMovimiento = document.querySelectorAll(
+  "[data-cerrar-movimiento]"
+);
+
+const formularioMovimiento = document.querySelector(
+  "#form-movimiento"
+);
+
+const movimientoItemId = document.querySelector(
+  "#movimiento-item-id"
+);
+
+const movimientoNombreInsumo = document.querySelector(
+  "#movimiento-nombre-insumo"
+);
+
+const movimientoStockActual = document.querySelector(
+  "#movimiento-stock-actual"
+);
+
+const movimientoTipo = document.querySelector(
+  "#movimiento-tipo"
+);
+
+const movimientoCantidad = document.querySelector(
+  "#movimiento-cantidad"
+);
+
+const movimientoUnidad = document.querySelector(
+  "#movimiento-unidad"
+);
+
+const movimientoMotivo = document.querySelector(
+  "#movimiento-motivo"
+);
+
+const botonGuardarMovimiento = document.querySelector(
+  "#guardar-movimiento"
+);
+
+// ===============================
+// TOAST
+// ===============================
+
 const toast = document.querySelector("#toast");
 const toastIcon = document.querySelector("#toast-icon");
 const toastMessage = document.querySelector("#toast-message");
@@ -63,7 +122,8 @@ function mostrarToast(mensaje, tipo = "success") {
   clearTimeout(toastTimer);
 
   toastMessage.textContent = mensaje;
-  toastIcon.textContent = tipo === "success" ? "✅" : "⚠️";
+  toastIcon.textContent =
+    tipo === "success" ? "✅" : "⚠️";
 
   toast.classList.remove(
     "toast--success",
@@ -86,31 +146,68 @@ function mostrarToast(mensaje, tipo = "success") {
   }, 3000);
 }
 
+// ===============================
+// PASOS DE LOS INPUTS
+// ===============================
+
 function actualizarPasoCampos() {
-  const esUnidad = inputUnidad.value === "unidades";
+  const esUnidad =
+    inputUnidad.value === "unidades";
+
   const paso = esUnidad ? "1" : "0.01";
 
   inputCantidad.step = paso;
   inputStockMinimo.step = paso;
 }
 
+function actualizarPasoMovimiento(unidad) {
+  const esUnidad = unidad === "unidades";
+
+  movimientoCantidad.step =
+    esUnidad ? "1" : "0.01";
+
+  movimientoCantidad.min =
+    esUnidad ? "1" : "0.01";
+}
+
+// ===============================
+// TARJETAS
+// ===============================
+
 function limpiarTarjetasActivas() {
-  [cardTotal, cardStockBajo, cardSinStock].forEach((card) => {
-    card.classList.remove("summary-card--active");
+  [
+    cardTotal,
+    cardStockBajo,
+    cardSinStock,
+  ].forEach((card) => {
+    card.classList.remove(
+      "summary-card--active"
+    );
   });
 }
 
 function activarTarjeta(cardActiva) {
   limpiarTarjetasActivas();
-  cardActiva.classList.add("summary-card--active");
+
+  cardActiva.classList.add(
+    "summary-card--active"
+  );
 }
+
+// ===============================
+// CARGAR INSUMOS
+// ===============================
 
 async function cargarInsumos(filtros = {}) {
   try {
-    const parametros = new URLSearchParams();
+    const parametros =
+      new URLSearchParams();
 
     if (filtros.nombre) {
-      parametros.append("nombre", filtros.nombre);
+      parametros.append(
+        "nombre",
+        filtros.nombre
+      );
     }
 
     if (
@@ -124,10 +221,14 @@ async function cargarInsumos(filtros = {}) {
     }
 
     if (filtros.stock) {
-      parametros.append("stock", filtros.stock);
+      parametros.append(
+        "stock",
+        filtros.stock
+      );
     }
 
-    const queryString = parametros.toString();
+    const queryString =
+      parametros.toString();
 
     const url = queryString
       ? `${API_URL}?${queryString}`
@@ -144,6 +245,7 @@ async function cargarInsumos(filtros = {}) {
     insumos = await respuesta.json();
 
     renderizarInsumos(insumos);
+
     await actualizarResumen();
   } catch (error) {
     console.error(error);
@@ -163,9 +265,14 @@ async function cargarInsumos(filtros = {}) {
   }
 }
 
+// ===============================
+// RESUMEN
+// ===============================
+
 async function actualizarResumen() {
   try {
-    const respuesta = await fetch(SUMMARY_URL);
+    const respuesta =
+      await fetch(SUMMARY_URL);
 
     if (!respuesta.ok) {
       throw new Error(
@@ -173,11 +280,17 @@ async function actualizarResumen() {
       );
     }
 
-    const resumen = await respuesta.json();
+    const resumen =
+      await respuesta.json();
 
-    totalInsumos.textContent = resumen.totalInsumos;
-    totalStockBajo.textContent = resumen.stockBajo;
-    totalSinStock.textContent = resumen.sinStock;
+    totalInsumos.textContent =
+      resumen.totalInsumos;
+
+    totalStockBajo.textContent =
+      resumen.stockBajo;
+
+    totalSinStock.textContent =
+      resumen.sinStock;
   } catch (error) {
     console.error(error);
 
@@ -187,6 +300,10 @@ async function actualizarResumen() {
   }
 }
 
+// ===============================
+// ESTADO DEL STOCK
+// ===============================
+
 function obtenerEstado(insumo) {
   if (insumo.cantidad === 0) {
     return {
@@ -195,7 +312,10 @@ function obtenerEstado(insumo) {
     };
   }
 
-  if (insumo.cantidad <= insumo.stockMinimo) {
+  if (
+    insumo.cantidad <=
+    insumo.stockMinimo
+  ) {
     return {
       texto: "Stock bajo",
       clase: "status-badge--low",
@@ -228,6 +348,10 @@ function obtenerIconoCategoria(categoria) {
   return iconos[categoria] || "📦";
 }
 
+// ===============================
+// RENDER TABLA
+// ===============================
+
 function renderizarInsumos(lista) {
   listaInsumos.innerHTML = "";
 
@@ -239,8 +363,11 @@ function renderizarInsumos(lista) {
   mensajeVacio.hidden = true;
 
   lista.forEach((insumo) => {
-    const estado = obtenerEstado(insumo);
-    const fila = document.createElement("tr");
+    const estado =
+      obtenerEstado(insumo);
+
+    const fila =
+      document.createElement("tr");
 
     fila.innerHTML = `
       <td>
@@ -255,7 +382,9 @@ function renderizarInsumos(lista) {
       </td>
 
       <td>${insumo.cantidad}</td>
+
       <td>${insumo.unidad}</td>
+
       <td>${insumo.stockMinimo}</td>
 
       <td>
@@ -266,6 +395,7 @@ function renderizarInsumos(lista) {
 
       <td>
         <div class="actions">
+
           <button
             class="action-button action-button--edit"
             type="button"
@@ -276,6 +406,15 @@ function renderizarInsumos(lista) {
           </button>
 
           <button
+            class="action-button action-button--movement"
+            type="button"
+            aria-label="Registrar movimiento de ${insumo.nombre}"
+            data-movimiento="${insumo.id}"
+          >
+            📦
+          </button>
+
+          <button
             class="action-button action-button--delete"
             type="button"
             aria-label="Eliminar ${insumo.nombre}"
@@ -283,6 +422,7 @@ function renderizarInsumos(lista) {
           >
             🗑️
           </button>
+
         </div>
       </td>
     `;
@@ -291,9 +431,16 @@ function renderizarInsumos(lista) {
   });
 }
 
+// ===============================
+// FILTROS
+// ===============================
+
 async function filtrarInsumos() {
-  const nombre = buscador.value.trim();
-  const categoria = filtroCategoria.value;
+  const nombre =
+    buscador.value.trim();
+
+  const categoria =
+    filtroCategoria.value;
 
   limpiarTarjetasActivas();
 
@@ -303,11 +450,22 @@ async function filtrarInsumos() {
   });
 }
 
-function activarMenu(botonActivo) {
-  botonInicio.classList.remove("nav-link--active");
-  botonInsumos.classList.remove("nav-link--active");
+// ===============================
+// NAVEGACIÓN
+// ===============================
 
-  botonActivo.classList.add("nav-link--active");
+function activarMenu(botonActivo) {
+  botonInicio.classList.remove(
+    "nav-link--active"
+  );
+
+  botonInsumos.classList.remove(
+    "nav-link--active"
+  );
+
+  botonActivo.classList.add(
+    "nav-link--active"
+  );
 }
 
 async function mostrarTodosLosInsumos() {
@@ -384,44 +542,79 @@ function irAInsumos() {
   activarMenu(botonInsumos);
 }
 
+// ===============================
+// MODAL AGREGAR / EDITAR
+// ===============================
+
 function abrirModal(insumo = null) {
   formulario.reset();
   inputId.value = "";
 
   if (insumo) {
-    tituloModal.textContent = "Editar insumo";
+    tituloModal.textContent =
+      "Editar insumo";
 
-    inputId.value = insumo.id;
-    inputNombre.value = insumo.nombre;
-    inputCategoria.value = insumo.categoria;
-    inputCantidad.value = insumo.cantidad;
-    inputUnidad.value = insumo.unidad;
-    inputStockMinimo.value = insumo.stockMinimo;
+    inputId.value =
+      insumo.id;
+
+    inputNombre.value =
+      insumo.nombre;
+
+    inputCategoria.value =
+      insumo.categoria;
+
+    inputCantidad.value =
+      insumo.cantidad;
+
+    inputUnidad.value =
+      insumo.unidad;
+
+    inputStockMinimo.value =
+      insumo.stockMinimo;
   } else {
-    tituloModal.textContent = "Agregar insumo";
+    tituloModal.textContent =
+      "Agregar insumo";
   }
 
   actualizarPasoCampos();
 
-  modal.classList.add("modal--open");
-  modal.setAttribute("aria-hidden", "false");
+  modal.classList.add(
+    "modal--open"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
 
   inputNombre.focus();
 }
 
 function cerrarModal() {
-  modal.classList.remove("modal--open");
-  modal.setAttribute("aria-hidden", "true");
+  modal.classList.remove(
+    "modal--open"
+  );
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
 
   formulario.reset();
   inputId.value = "";
 }
 
+// ===============================
+// MODAL ELIMINAR
+// ===============================
+
 function abrirModalEliminar(id) {
-  const insumoEncontrado = insumos.find(
-    (insumo) =>
-      String(insumo.id) === String(id)
-  );
+  const insumoEncontrado =
+    insumos.find(
+      (insumo) =>
+        String(insumo.id) ===
+        String(id)
+    );
 
   if (!insumoEncontrado) {
     mostrarToast(
@@ -432,12 +625,15 @@ function abrirModalEliminar(id) {
     return;
   }
 
-  idPendienteDeEliminacion = insumoEncontrado.id;
+  idPendienteDeEliminacion =
+    insumoEncontrado.id;
 
   nombreInsumoEliminar.textContent =
     `"${insumoEncontrado.nombre}"`;
 
-  modalEliminar.classList.add("modal--open");
+  modalEliminar.classList.add(
+    "modal--open"
+  );
 
   modalEliminar.setAttribute(
     "aria-hidden",
@@ -448,7 +644,9 @@ function abrirModalEliminar(id) {
 }
 
 function cerrarModalEliminar() {
-  modalEliminar.classList.remove("modal--open");
+  modalEliminar.classList.remove(
+    "modal--open"
+  );
 
   modalEliminar.setAttribute(
     "aria-hidden",
@@ -456,8 +654,88 @@ function cerrarModalEliminar() {
   );
 
   idPendienteDeEliminacion = null;
+
   nombreInsumoEliminar.textContent = "";
 }
+
+// ===============================
+// MODAL MOVIMIENTO
+// ===============================
+
+function abrirModalMovimiento(id) {
+  const insumoEncontrado =
+    insumos.find(
+      (insumo) =>
+        String(insumo.id) ===
+        String(id)
+    );
+
+  if (!insumoEncontrado) {
+    mostrarToast(
+      "No se encontró el insumo seleccionado",
+      "error"
+    );
+
+    return;
+  }
+
+  formularioMovimiento.reset();
+
+  movimientoItemId.value =
+    insumoEncontrado.id;
+
+  movimientoNombreInsumo.textContent =
+    insumoEncontrado.nombre;
+
+  movimientoStockActual.textContent =
+    `Stock actual: ${insumoEncontrado.cantidad} ${insumoEncontrado.unidad}`;
+
+  movimientoUnidad.textContent =
+    `Cantidad expresada en ${insumoEncontrado.unidad}`;
+
+  actualizarPasoMovimiento(
+    insumoEncontrado.unidad
+  );
+
+  modalMovimiento.classList.add(
+    "modal--open"
+  );
+
+  modalMovimiento.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  movimientoTipo.focus();
+}
+
+function cerrarModalMovimiento() {
+  modalMovimiento.classList.remove(
+    "modal--open"
+  );
+
+  modalMovimiento.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  formularioMovimiento.reset();
+
+  movimientoItemId.value = "";
+
+  movimientoNombreInsumo.textContent =
+    "Insumo";
+
+  movimientoStockActual.textContent =
+    "Stock actual: —";
+
+  movimientoUnidad.textContent =
+    "Unidad del insumo";
+}
+
+// ===============================
+// GUARDAR INSUMO
+// ===============================
 
 async function guardarInsumo(evento) {
   evento.preventDefault();
@@ -465,14 +743,26 @@ async function guardarInsumo(evento) {
   const id = inputId.value;
 
   const datosInsumo = {
-    nombre: inputNombre.value.trim(),
-    categoria: inputCategoria.value,
-    cantidad: Number(inputCantidad.value),
-    unidad: inputUnidad.value,
-    stockMinimo: Number(inputStockMinimo.value),
+    nombre:
+      inputNombre.value.trim(),
+
+    categoria:
+      inputCategoria.value,
+
+    cantidad:
+      Number(inputCantidad.value),
+
+    unidad:
+      inputUnidad.value,
+
+    stockMinimo:
+      Number(
+        inputStockMinimo.value
+      ),
   };
 
-  const estaEditando = Boolean(id);
+  const estaEditando =
+    Boolean(id);
 
   const url = estaEditando
     ? `${API_URL}/${id}`
@@ -483,26 +773,36 @@ async function guardarInsumo(evento) {
     : "POST";
 
   try {
-    const respuesta = await fetch(url, {
-      method: metodo,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(datosInsumo),
-    });
+    const respuesta =
+      await fetch(url, {
+        method: metodo,
 
-    const resultado = await respuesta.json();
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+
+        body: JSON.stringify(
+          datosInsumo
+        ),
+      });
+
+    const resultado =
+      await respuesta.json();
 
     if (!respuesta.ok) {
       const mensajesValidacion =
         resultado.errores
-          ?.map((error) => error.mensaje)
+          ?.map(
+            (error) =>
+              error.mensaje
+          )
           .join("\n");
 
       throw new Error(
         mensajesValidacion ||
-          resultado.mensaje ||
-          "No se pudo guardar el insumo"
+        resultado.mensaje ||
+        "No se pudo guardar el insumo"
       );
     }
 
@@ -517,45 +817,61 @@ async function guardarInsumo(evento) {
     );
   } catch (error) {
     console.error(error);
-    mostrarToast(error.message, "error");
+
+    mostrarToast(
+      error.message,
+      "error"
+    );
   }
 }
 
 function editarInsumo(id) {
-  const insumoEncontrado = insumos.find(
-    (insumo) =>
-      String(insumo.id) === String(id)
-  );
+  const insumoEncontrado =
+    insumos.find(
+      (insumo) =>
+        String(insumo.id) ===
+        String(id)
+    );
 
   if (insumoEncontrado) {
     abrirModal(insumoEncontrado);
   }
 }
 
+// ===============================
+// CONFIRMAR ELIMINACIÓN
+// ===============================
+
 async function confirmarEliminacion() {
   if (!idPendienteDeEliminacion) {
     return;
   }
 
-  const id = idPendienteDeEliminacion;
+  const id =
+    idPendienteDeEliminacion;
 
   try {
-    botonConfirmarEliminar.disabled = true;
-    botonConfirmarEliminar.textContent = "Eliminando...";
+    botonConfirmarEliminar.disabled =
+      true;
 
-    const respuesta = await fetch(
-      `${API_URL}/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
+    botonConfirmarEliminar.textContent =
+      "Eliminando...";
 
-    const resultado = await respuesta.json();
+    const respuesta =
+      await fetch(
+        `${API_URL}/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+    const resultado =
+      await respuesta.json();
 
     if (!respuesta.ok) {
       throw new Error(
         resultado.mensaje ||
-          "No se pudo eliminar el insumo"
+        "No se pudo eliminar el insumo"
       );
     }
 
@@ -568,12 +884,173 @@ async function confirmarEliminacion() {
     );
   } catch (error) {
     console.error(error);
-    mostrarToast(error.message, "error");
+
+    mostrarToast(
+      error.message,
+      "error"
+    );
   } finally {
-    botonConfirmarEliminar.disabled = false;
-    botonConfirmarEliminar.textContent = "Eliminar";
+    botonConfirmarEliminar.disabled =
+      false;
+
+    botonConfirmarEliminar.textContent =
+      "Eliminar";
   }
 }
+
+// ===============================
+// REGISTRAR MOVIMIENTO
+// ===============================
+
+async function registrarMovimiento(evento) {
+  evento.preventDefault();
+
+  const itemId =
+    movimientoItemId.value;
+
+  const tipo =
+    movimientoTipo.value;
+
+  const cantidad =
+    Number(
+      movimientoCantidad.value
+    );
+
+  const motivo =
+    movimientoMotivo.value.trim();
+
+  if (!itemId) {
+    mostrarToast(
+      "No se encontró el insumo",
+      "error"
+    );
+
+    return;
+  }
+
+  if (!tipo) {
+    mostrarToast(
+      "Seleccioná entrada o salida",
+      "error"
+    );
+
+    return;
+  }
+
+  if (
+    !cantidad ||
+    cantidad <= 0
+  ) {
+    mostrarToast(
+      "La cantidad debe ser mayor a 0",
+      "error"
+    );
+
+    return;
+  }
+
+  const insumoSeleccionado =
+    insumos.find(
+      (insumo) =>
+        String(insumo.id) ===
+        String(itemId)
+    );
+
+  if (
+    insumoSeleccionado?.unidad ===
+      "unidades" &&
+    !Number.isInteger(cantidad)
+  ) {
+    mostrarToast(
+      "Para unidades ingresá un número entero",
+      "error"
+    );
+
+    return;
+  }
+
+  const datosMovimiento = {
+    itemId,
+    tipo,
+    cantidad,
+  };
+
+  if (motivo) {
+    datosMovimiento.motivo =
+      motivo;
+  }
+
+  try {
+    botonGuardarMovimiento.disabled =
+      true;
+
+    botonGuardarMovimiento.textContent =
+      "Registrando...";
+
+    const respuesta =
+      await fetch(
+        MOVEMENTS_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify(
+            datosMovimiento
+          ),
+        }
+      );
+
+    const resultado =
+      await respuesta.json();
+
+    if (!respuesta.ok) {
+      const mensajesValidacion =
+        resultado.errores
+          ?.map(
+            (error) =>
+              error.mensaje
+          )
+          .join("\n");
+
+      throw new Error(
+        mensajesValidacion ||
+        resultado.mensaje ||
+        "No se pudo registrar el movimiento"
+      );
+    }
+
+    cerrarModalMovimiento();
+
+    await filtrarInsumos();
+
+    mostrarToast(
+      tipo === "entrada"
+        ? "Entrada registrada correctamente"
+        : "Salida registrada correctamente"
+    );
+  } catch (error) {
+    console.error(error);
+
+    mostrarToast(
+      error.message,
+      "error"
+    );
+  } finally {
+    botonGuardarMovimiento.disabled =
+      false;
+
+    botonGuardarMovimiento.textContent =
+      "Registrar movimiento";
+  }
+}
+
+// ===============================
+// EVENTOS
+// ===============================
 
 botonInicio.addEventListener(
   "click",
@@ -600,23 +1077,39 @@ cardSinStock.addEventListener(
   mostrarSinStock
 );
 
-botonAbrirModal.addEventListener("click", () => {
-  abrirModal();
-});
+botonAbrirModal.addEventListener(
+  "click",
+  () => {
+    abrirModal();
+  }
+);
 
-botonesCerrarModal.forEach((boton) => {
-  boton.addEventListener(
-    "click",
-    cerrarModal
-  );
-});
+botonesCerrarModal.forEach(
+  (boton) => {
+    boton.addEventListener(
+      "click",
+      cerrarModal
+    );
+  }
+);
 
-botonesCerrarEliminar.forEach((boton) => {
-  boton.addEventListener(
-    "click",
-    cerrarModalEliminar
-  );
-});
+botonesCerrarEliminar.forEach(
+  (boton) => {
+    boton.addEventListener(
+      "click",
+      cerrarModalEliminar
+    );
+  }
+);
+
+botonesCerrarMovimiento.forEach(
+  (boton) => {
+    boton.addEventListener(
+      "click",
+      cerrarModalMovimiento
+    );
+  }
+);
 
 botonConfirmarEliminar.addEventListener(
   "click",
@@ -628,18 +1121,29 @@ formulario.addEventListener(
   guardarInsumo
 );
 
+formularioMovimiento.addEventListener(
+  "submit",
+  registrarMovimiento
+);
+
 inputUnidad.addEventListener(
   "change",
   actualizarPasoCampos
 );
 
-buscador.addEventListener("input", () => {
-  clearTimeout(temporizadorBusqueda);
+buscador.addEventListener(
+  "input",
+  () => {
+    clearTimeout(
+      temporizadorBusqueda
+    );
 
-  temporizadorBusqueda = setTimeout(() => {
-    filtrarInsumos();
-  }, 300);
-});
+    temporizadorBusqueda =
+      setTimeout(() => {
+        filtrarInsumos();
+      }, 300);
+  }
+);
 
 filtroCategoria.addEventListener(
   "change",
@@ -649,9 +1153,15 @@ filtroCategoria.addEventListener(
 listaInsumos.addEventListener(
   "click",
   (evento) => {
-    const botonEditar = evento.target.closest(
-      "[data-editar]"
-    );
+    const botonEditar =
+      evento.target.closest(
+        "[data-editar]"
+      );
+
+    const botonMovimiento =
+      evento.target.closest(
+        "[data-movimiento]"
+      );
 
     const botonEliminar =
       evento.target.closest(
@@ -664,6 +1174,12 @@ listaInsumos.addEventListener(
       );
     }
 
+    if (botonMovimiento) {
+      abrirModalMovimiento(
+        botonMovimiento.dataset.movimiento
+      );
+    }
+
     if (botonEliminar) {
       abrirModalEliminar(
         botonEliminar.dataset.eliminar
@@ -672,10 +1188,23 @@ listaInsumos.addEventListener(
   }
 );
 
+// ===============================
+// ESCAPE
+// ===============================
+
 document.addEventListener(
   "keydown",
   (evento) => {
     if (evento.key !== "Escape") {
+      return;
+    }
+
+    if (
+      modalMovimiento.classList.contains(
+        "modal--open"
+      )
+    ) {
+      cerrarModalMovimiento();
       return;
     }
 
@@ -689,11 +1218,17 @@ document.addEventListener(
     }
 
     if (
-      modal.classList.contains("modal--open")
+      modal.classList.contains(
+        "modal--open"
+      )
     ) {
       cerrarModal();
     }
   }
 );
+
+// ===============================
+// INICIO
+// ===============================
 
 cargarInsumos();

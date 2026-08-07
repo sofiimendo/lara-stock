@@ -4,7 +4,10 @@
 <head>
   <meta charset="UTF-8" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>Control de stock | Lara Pastelería</title>
 
@@ -13,19 +16,36 @@
 
 <body>
   <div class="app">
+
     <!-- Menú lateral -->
     <aside class="sidebar">
+
       <div class="sidebar__brand">
-        <img src="./assets/images/logo-lara.jpg" alt="Logo de Lara Pastelería" class="sidebar__logo" />
+        <img
+          src="./assets/images/logo-lara.jpg"
+          alt="Logo de Lara Pastelería"
+          class="sidebar__logo"
+        />
       </div>
 
-      <nav class="sidebar__nav" aria-label="Navegación principal">
-        <button class="nav-link nav-link--active" id="nav-inicio" type="button">
+      <nav
+        class="sidebar__nav"
+        aria-label="Navegación principal"
+      >
+        <button
+          class="nav-link nav-link--active"
+          id="nav-inicio"
+          type="button"
+        >
           <span class="nav-link__icon">⌂</span>
           Inicio
         </button>
 
-        <button class="nav-link" id="nav-insumos" type="button">
+        <button
+          class="nav-link"
+          id="nav-insumos"
+          type="button"
+        >
           <span class="nav-link__icon">▣</span>
           Insumos
         </button>
@@ -38,12 +58,15 @@
           Que tu día esté tan dulce como tus creaciones.
         </p>
       </div>
+
     </aside>
 
     <!-- Contenido principal -->
     <main class="main-content">
+
       <!-- Encabezado -->
       <header class="header">
+
         <div>
           <h1 class="header__title">
             ¡Hola, Lara! 👋
@@ -54,17 +77,32 @@
           </p>
         </div>
 
-        <button class="user-menu" id="boton-usuario" type="button" aria-expanded="false">
+        <button
+          class="user-menu"
+          id="boton-usuario"
+          type="button"
+          aria-expanded="false"
+        >
           <span class="user-menu__avatar">L</span>
           <span>Lara</span>
           <span aria-hidden="true">⌄</span>
         </button>
+
       </header>
 
       <!-- Tarjetas de resumen -->
-      <section class="summary" aria-label="Resumen del stock">
-        <article class="summary-card" id="card-total">
-          <div class="summary-card__icon summary-card__icon--green">
+      <section
+        class="summary"
+        aria-label="Resumen del stock"
+      >
+
+        <article
+          class="summary-card"
+          id="card-total"
+        >
+          <div
+            class="summary-card__icon summary-card__icon--green"
+          >
             📦
           </div>
 
@@ -73,14 +111,22 @@
               Insumos totales
             </p>
 
-            <strong class="summary-card__value" id="total-insumos">
+            <strong
+              class="summary-card__value"
+              id="total-insumos"
+            >
               0
             </strong>
           </div>
         </article>
 
-        <article class="summary-card" id="card-stock-bajo">
-          <div class="summary-card__icon summary-card__icon--yellow">
+        <article
+          class="summary-card"
+          id="card-stock-bajo"
+        >
+          <div
+            class="summary-card__icon summary-card__icon--yellow"
+          >
             🔔
           </div>
 
@@ -89,14 +135,22 @@
               Stock bajo
             </p>
 
-            <strong class="summary-card__value" id="total-stock-bajo">
+            <strong
+              class="summary-card__value"
+              id="total-stock-bajo"
+            >
               0
             </strong>
           </div>
         </article>
 
-        <article class="summary-card" id="card-sin-stock">
-          <div class="summary-card__icon summary-card__icon--coral">
+        <article
+          class="summary-card"
+          id="card-sin-stock"
+        >
+          <div
+            class="summary-card__icon summary-card__icon--coral"
+          >
             ✕
           </div>
 
@@ -105,15 +159,23 @@
               Sin stock
             </p>
 
-            <strong class="summary-card__value" id="total-sin-stock">
+            <strong
+              class="summary-card__value"
+              id="total-sin-stock"
+            >
               0
             </strong>
           </div>
         </article>
+
       </section>
 
       <!-- Sección de insumos -->
-      <section class="inventory" id="seccion-insumos">
+      <section
+        class="inventory"
+        id="seccion-insumos"
+      >
+
         <div class="inventory__heading">
           <div>
             <h2 class="inventory__title">
@@ -129,24 +191,46 @@
 
         <!-- Buscador, filtro y botón -->
         <div class="inventory__tools">
+
           <div class="search">
-            <label class="sr-only" for="buscador">
+
+            <label
+              class="sr-only"
+              for="buscador"
+            >
               Buscar insumo
             </label>
 
-            <span class="search__icon" aria-hidden="true">
+            <span
+              class="search__icon"
+              aria-hidden="true"
+            >
               ⌕
             </span>
 
-            <input class="search__input" type="search" id="buscador" placeholder="Buscar insumo..." />
+            <input
+              class="search__input"
+              type="search"
+              id="buscador"
+              placeholder="Buscar insumo..."
+            />
+
           </div>
 
           <div class="filter">
-            <label class="sr-only" for="filtro-categoria">
+
+            <label
+              class="sr-only"
+              for="filtro-categoria"
+            >
               Filtrar por categoría
             </label>
 
-            <select class="filter__select" id="filtro-categoria">
+            <select
+              class="filter__select"
+              id="filtro-categoria"
+            >
+
               <option value="todas">
                 Todas las categorías
               </option>
@@ -202,18 +286,27 @@
               <option value="Congelados">
                 Congelados
               </option>
+
             </select>
+
           </div>
 
-          <button class="button button--primary" id="abrir-modal" type="button">
+          <button
+            class="button button--primary"
+            id="abrir-modal"
+            type="button"
+          >
             <span aria-hidden="true">＋</span>
             Agregar insumo
           </button>
+
         </div>
 
         <!-- Tabla -->
         <div class="table-container">
+
           <table class="inventory-table">
+
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -229,26 +322,55 @@
             <tbody id="lista-insumos">
               <!-- JavaScript agregará las filas acá -->
             </tbody>
+
           </table>
 
-          <p class="empty-message" id="mensaje-vacio" hidden>
+          <p
+            class="empty-message"
+            id="mensaje-vacio"
+            hidden
+          >
             No se encontraron insumos.
           </p>
+
         </div>
+
       </section>
+
     </main>
+
   </div>
 
   <!-- Modal para agregar y editar -->
-  <div class="modal" id="modal-insumo" aria-hidden="true">
-    <div class="modal__backdrop" data-cerrar-modal></div>
+  <div
+    class="modal"
+    id="modal-insumo"
+    aria-hidden="true"
+  >
 
-    <section class="modal__content" role="dialog" aria-modal="true" aria-labelledby="titulo-modal">
-      <button class="modal__close" type="button" aria-label="Cerrar formulario" data-cerrar-modal>
+    <div
+      class="modal__backdrop"
+      data-cerrar-modal
+    ></div>
+
+    <section
+      class="modal__content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-modal"
+    >
+
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Cerrar formulario"
+        data-cerrar-modal
+      >
         ×
       </button>
 
       <div class="modal__header">
+
         <h2 id="titulo-modal">
           Agregar insumo
         </h2>
@@ -256,25 +378,47 @@
         <p>
           Completá los datos del nuevo insumo.
         </p>
+
       </div>
 
-      <form class="form" id="form-insumo">
-        <input type="hidden" id="insumo-id" />
+      <form
+        class="form"
+        id="form-insumo"
+      >
+
+        <input
+          type="hidden"
+          id="insumo-id"
+        />
 
         <div class="form__group">
+
           <label for="nombre">
             Nombre
           </label>
 
-          <input type="text" id="nombre" name="nombre" placeholder="Ej. Harina 000" required />
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            placeholder="Ej. Harina 000"
+            required
+          />
+
         </div>
 
         <div class="form__group">
+
           <label for="categoria">
             Categoría
           </label>
 
-          <select id="categoria" name="categoria" required>
+          <select
+            id="categoria"
+            name="categoria"
+            required
+          >
+
             <option value="">
               Seleccionar categoría
             </option>
@@ -330,24 +474,43 @@
             <option value="Congelados">
               Congelados
             </option>
+
           </select>
+
         </div>
 
         <div class="form__row">
+
           <div class="form__group">
+
             <label for="cantidad">
               Cantidad
             </label>
 
-            <input type="number" id="cantidad" name="cantidad" min="0" step="0.01" placeholder="Ej. 5" required />
+            <input
+              type="number"
+              id="cantidad"
+              name="cantidad"
+              min="0"
+              step="0.01"
+              placeholder="Ej. 5"
+              required
+            />
+
           </div>
 
           <div class="form__group">
+
             <label for="unidad">
               Unidad
             </label>
 
-            <select id="unidad" name="unidad" required>
+            <select
+              id="unidad"
+              name="unidad"
+              required
+            >
+
               <option value="">
                 Seleccionar unidad
               </option>
@@ -363,42 +526,86 @@
               <option value="unidades">
                 unidades
               </option>
+
             </select>
+
           </div>
+
         </div>
 
         <div class="form__group">
+
           <label for="stock-minimo">
             Stock mínimo
           </label>
 
-          <input type="number" id="stock-minimo" name="stockMinimo" min="0" step="0.01" placeholder="Ej. 2" required />
+          <input
+            type="number"
+            id="stock-minimo"
+            name="stockMinimo"
+            min="0"
+            step="0.01"
+            placeholder="Ej. 2"
+            required
+          />
+
         </div>
 
         <div class="form__actions">
-          <button class="button button--secondary" type="button" data-cerrar-modal>
+
+          <button
+            class="button button--secondary"
+            type="button"
+            data-cerrar-modal
+          >
             Cancelar
           </button>
 
-          <button class="button button--primary" type="submit">
+          <button
+            class="button button--primary"
+            type="submit"
+          >
             Guardar insumo
           </button>
+
         </div>
+
       </form>
+
     </section>
+
   </div>
 
   <!-- Modal para eliminar -->
-  <div class="modal" id="modal-eliminar" aria-hidden="true">
-    <div class="modal__backdrop" data-cerrar-eliminar></div>
+  <div
+    class="modal"
+    id="modal-eliminar"
+    aria-hidden="true"
+  >
 
-    <section class="modal__content modal__content--small" role="dialog" aria-modal="true"
-      aria-labelledby="titulo-eliminar">
-      <button class="modal__close" type="button" aria-label="Cerrar confirmación" data-cerrar-eliminar>
+    <div
+      class="modal__backdrop"
+      data-cerrar-eliminar
+    ></div>
+
+    <section
+      class="modal__content modal__content--small"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-eliminar"
+    >
+
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Cerrar confirmación"
+        data-cerrar-eliminar
+      >
         ×
       </button>
 
       <div class="modal__header">
+
         <h2 id="titulo-eliminar">
           Eliminar insumo
         </h2>
@@ -406,6 +613,7 @@
         <p>
           Esta acción no se puede deshacer.
         </p>
+
       </div>
 
       <p class="delete-message">
@@ -414,25 +622,214 @@
       </p>
 
       <div class="form__actions">
-        <button class="button button--secondary" type="button" data-cerrar-eliminar>
+
+        <button
+          class="button button--secondary"
+          type="button"
+          data-cerrar-eliminar
+        >
           Cancelar
         </button>
 
-        <button class="button button--danger" id="confirmar-eliminar" type="button">
+        <button
+          class="button button--danger"
+          id="confirmar-eliminar"
+          type="button"
+        >
           Eliminar
         </button>
+
       </div>
+
     </section>
+
+  </div>
+
+  <!-- Modal para registrar movimientos -->
+  <div
+    class="modal"
+    id="modal-movimiento"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal__backdrop"
+      data-cerrar-movimiento
+    ></div>
+
+    <section
+      class="modal__content"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-movimiento"
+    >
+
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Cerrar movimiento"
+        data-cerrar-movimiento
+      >
+        ×
+      </button>
+
+      <div class="modal__header">
+
+        <h2 id="titulo-movimiento">
+          Registrar movimiento
+        </h2>
+
+        <p>
+          Registrá una entrada o salida del inventario.
+        </p>
+
+      </div>
+
+      <form
+        class="form"
+        id="form-movimiento"
+      >
+
+        <input
+          type="hidden"
+          id="movimiento-item-id"
+        />
+
+        <div class="form__group">
+
+          <label>
+            Insumo
+          </label>
+
+          <div class="movement-product">
+            <strong id="movimiento-nombre-insumo">
+              Insumo
+            </strong>
+
+            <span id="movimiento-stock-actual">
+              Stock actual: —
+            </span>
+          </div>
+
+        </div>
+
+        <div class="form__group">
+
+          <label for="movimiento-tipo">
+            Tipo de movimiento
+          </label>
+
+          <select
+            id="movimiento-tipo"
+            name="tipo"
+            required
+          >
+
+            <option value="">
+              Seleccionar tipo
+            </option>
+
+            <option value="entrada">
+              Entrada
+            </option>
+
+            <option value="salida">
+              Salida
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="form__group">
+
+          <label for="movimiento-cantidad">
+            Cantidad
+          </label>
+
+          <input
+            type="number"
+            id="movimiento-cantidad"
+            name="cantidad"
+            min="0.01"
+            step="0.01"
+            placeholder="Ej. 2"
+            required
+          />
+
+          <small
+            class="form__help"
+            id="movimiento-unidad"
+          >
+            Unidad del insumo
+          </small>
+
+        </div>
+
+        <div class="form__group">
+
+          <label for="movimiento-motivo">
+            Motivo
+          </label>
+
+          <input
+            type="text"
+            id="movimiento-motivo"
+            name="motivo"
+            placeholder="Ej. Producción, compra a proveedor..."
+          />
+
+        </div>
+
+        <div class="form__actions">
+
+          <button
+            class="button button--secondary"
+            type="button"
+            data-cerrar-movimiento
+          >
+            Cancelar
+          </button>
+
+          <button
+            class="button button--primary"
+            id="guardar-movimiento"
+            type="submit"
+          >
+            Registrar movimiento
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
   </div>
 
   <!-- Toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite" aria-hidden="true">
-    <span id="toast-icon" class="toast__icon"></span>
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+    aria-hidden="true"
+  >
 
-    <span id="toast-message" class="toast__message"></span>
+    <span
+      id="toast-icon"
+      class="toast__icon"
+    ></span>
+
+    <span
+      id="toast-message"
+      class="toast__message"
+    ></span>
+
   </div>
 
   <script src="./js/app.js"></script>
+
 </body>
 
 </html>
