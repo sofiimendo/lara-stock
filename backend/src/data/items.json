@@ -3,11 +3,11 @@
         "id": "553ba461-fc57-47be-82bb-f98433184596",
         "nombre": "Huevos",
         "categoria": "Refrigerados",
-        "cantidad": 5,
+        "cantidad": 3,
         "unidad": "unidades",
         "stockMinimo": 1,
         "createdAt": "2026-08-03T00:00:00.000Z",
-        "updatedAt": "2026-08-06T03:34:49.357Z"
+        "updatedAt": "2026-08-07T20:17:18.623Z"
     },
     {
         "id": "b03cc4d2-170e-4b59-accf-3a9ccb85a169",
@@ -73,11 +73,11 @@
         "id": "7c628c1b-204b-4410-b5d2-f8ddd9005cd1",
         "nombre": "Harina 0000",
         "categoria": "Harinas y féculas",
-        "cantidad": 0,
+        "cantidad": 5,
         "unidad": "kg",
         "stockMinimo": 1,
         "createdAt": "2026-08-03T00:00:00.000Z",
-        "updatedAt": "2026-08-03T00:00:00.000Z"
+        "updatedAt": "2026-08-06T04:29:02.248Z"
     },
     {
         "id": "1421d7be-0cba-4e1a-af1c-80dcbc2b0264",
