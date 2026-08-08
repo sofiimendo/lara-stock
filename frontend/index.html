@@ -15,9 +15,13 @@
 </head>
 
 <body>
+
   <div class="app">
 
-    <!-- Menú lateral -->
+    <!-- =========================
+         MENÚ LATERAL
+    ========================== -->
+
     <aside class="sidebar">
 
       <div class="sidebar__brand">
@@ -32,6 +36,7 @@
         class="sidebar__nav"
         aria-label="Navegación principal"
       >
+
         <button
           class="nav-link nav-link--active"
           id="nav-inicio"
@@ -49,25 +54,46 @@
           <span class="nav-link__icon">▣</span>
           Insumos
         </button>
+
+        <button
+          class="nav-link"
+          id="nav-movimientos"
+          type="button"
+        >
+          <span class="nav-link__icon">↕</span>
+          Movimientos
+        </button>
+
       </nav>
 
       <div class="sidebar__message">
-        <span class="sidebar__message-icon">☕</span>
+
+        <span class="sidebar__message-icon">
+          ☕
+        </span>
 
         <p>
           Que tu día esté tan dulce como tus creaciones.
         </p>
+
       </div>
 
     </aside>
 
-    <!-- Contenido principal -->
+    <!-- =========================
+         CONTENIDO PRINCIPAL
+    ========================== -->
+
     <main class="main-content">
 
-      <!-- Encabezado -->
+      <!-- =========================
+           ENCABEZADO
+      ========================== -->
+
       <header class="header">
 
         <div>
+
           <h1 class="header__title">
             ¡Hola, Lara! 👋
           </h1>
@@ -75,22 +101,102 @@
           <p class="header__subtitle">
             Bienvenida a tu control de stock
           </p>
+
         </div>
 
-        <button
-          class="user-menu"
-          id="boton-usuario"
-          type="button"
-          aria-expanded="false"
-        >
-          <span class="user-menu__avatar">L</span>
-          <span>Lara</span>
-          <span aria-hidden="true">⌄</span>
-        </button>
+        <!-- Usuario -->
+
+        <div class="user-area">
+
+          <button
+            class="user-menu"
+            id="boton-usuario"
+            type="button"
+            aria-expanded="false"
+            aria-controls="menu-usuario"
+          >
+
+            <span class="user-menu__avatar">
+              L
+            </span>
+
+            <span>
+              Lara
+            </span>
+
+            <span
+              class="user-menu__arrow"
+              aria-hidden="true"
+            >
+              ⌄
+            </span>
+
+          </button>
+
+          <!-- Menú desplegable de usuario -->
+
+          <div
+            class="user-dropdown"
+            id="menu-usuario"
+            aria-hidden="true"
+          >
+
+            <div class="user-dropdown__header">
+
+              <span class="user-dropdown__avatar">
+                L
+              </span>
+
+              <div>
+
+                <strong>
+                  Lara Pastelería
+                </strong>
+
+                <span>
+                  Administradora
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="user-dropdown__divider"></div>
+
+            <button
+              class="user-dropdown__option"
+              id="abrir-perfil"
+              type="button"
+            >
+              <span aria-hidden="true">
+                👤
+              </span>
+
+              Mi perfil
+            </button>
+
+            <button
+              class="user-dropdown__option"
+              id="abrir-acerca"
+              type="button"
+            >
+              <span aria-hidden="true">
+                ℹ️
+              </span>
+
+              Acerca del sistema
+            </button>
+
+          </div>
+
+        </div>
 
       </header>
 
-      <!-- Tarjetas de resumen -->
+      <!-- =========================
+           TARJETAS DE RESUMEN
+      ========================== -->
+
       <section
         class="summary"
         aria-label="Resumen del stock"
@@ -100,6 +206,7 @@
           class="summary-card"
           id="card-total"
         >
+
           <div
             class="summary-card__icon summary-card__icon--green"
           >
@@ -107,6 +214,7 @@
           </div>
 
           <div>
+
             <p class="summary-card__label">
               Insumos totales
             </p>
@@ -117,13 +225,16 @@
             >
               0
             </strong>
+
           </div>
+
         </article>
 
         <article
           class="summary-card"
           id="card-stock-bajo"
         >
+
           <div
             class="summary-card__icon summary-card__icon--yellow"
           >
@@ -131,6 +242,7 @@
           </div>
 
           <div>
+
             <p class="summary-card__label">
               Stock bajo
             </p>
@@ -141,13 +253,16 @@
             >
               0
             </strong>
+
           </div>
+
         </article>
 
         <article
           class="summary-card"
           id="card-sin-stock"
         >
+
           <div
             class="summary-card__icon summary-card__icon--coral"
           >
@@ -155,6 +270,7 @@
           </div>
 
           <div>
+
             <p class="summary-card__label">
               Sin stock
             </p>
@@ -165,19 +281,26 @@
             >
               0
             </strong>
+
           </div>
+
         </article>
 
       </section>
 
-      <!-- Sección de insumos -->
+      <!-- =========================
+           SECCIÓN INSUMOS
+      ========================== -->
+
       <section
         class="inventory"
         id="seccion-insumos"
       >
 
         <div class="inventory__heading">
+
           <div>
+
             <h2 class="inventory__title">
               Insumos
             </h2>
@@ -186,10 +309,13 @@
               Administrá todos los ingredientes de tu
               pastelería.
             </p>
+
           </div>
+
         </div>
 
         <!-- Buscador, filtro y botón -->
+
         <div class="inventory__tools">
 
           <div class="search">
@@ -296,18 +422,25 @@
             id="abrir-modal"
             type="button"
           >
-            <span aria-hidden="true">＋</span>
+
+            <span aria-hidden="true">
+              ＋
+            </span>
+
             Agregar insumo
+
           </button>
 
         </div>
 
-        <!-- Tabla -->
+        <!-- Tabla de insumos -->
+
         <div class="table-container">
 
           <table class="inventory-table">
 
             <thead>
+
               <tr>
                 <th>Nombre</th>
                 <th>Categoría</th>
@@ -317,10 +450,11 @@
                 <th>Estado</th>
                 <th>Acciones</th>
               </tr>
+
             </thead>
 
             <tbody id="lista-insumos">
-              <!-- JavaScript agregará las filas acá -->
+              <!-- JavaScript agrega las filas -->
             </tbody>
 
           </table>
@@ -337,11 +471,108 @@
 
       </section>
 
+      <!-- =========================
+           HISTORIAL DE MOVIMIENTOS
+      ========================== -->
+
+      <section
+        class="inventory movements-section"
+        id="seccion-movimientos"
+      >
+
+        <div class="inventory__heading">
+
+          <div>
+
+            <h2 class="inventory__title">
+              Historial de movimientos
+            </h2>
+
+            <p class="inventory__description">
+              Consultá las entradas y salidas registradas
+              en el inventario.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="movements-tools">
+
+          <div class="filter">
+
+            <label
+              class="sr-only"
+              for="filtro-tipo-movimiento"
+            >
+              Filtrar movimientos por tipo
+            </label>
+
+            <select
+              class="filter__select"
+              id="filtro-tipo-movimiento"
+            >
+
+              <option value="todos">
+                Todos los movimientos
+              </option>
+
+              <option value="entrada">
+                Entradas
+              </option>
+
+              <option value="salida">
+                Salidas
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <div class="table-container">
+
+          <table class="inventory-table movements-table">
+
+            <thead>
+
+              <tr>
+                <th>Fecha</th>
+                <th>Insumo</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Motivo</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="lista-movimientos">
+              <!-- JavaScript agrega los movimientos -->
+            </tbody>
+
+          </table>
+
+          <p
+            class="empty-message"
+            id="mensaje-movimientos-vacio"
+            hidden
+          >
+            Todavía no hay movimientos registrados.
+          </p>
+
+        </div>
+
+      </section>
+
     </main>
 
   </div>
 
-  <!-- Modal para agregar y editar -->
+  <!-- =========================
+       MODAL AGREGAR / EDITAR
+  ========================== -->
+
   <div
     class="modal"
     id="modal-insumo"
@@ -576,7 +807,10 @@
 
   </div>
 
-  <!-- Modal para eliminar -->
+  <!-- =========================
+       MODAL ELIMINAR
+  ========================== -->
+
   <div
     class="modal"
     id="modal-eliminar"
@@ -617,8 +851,13 @@
       </div>
 
       <p class="delete-message">
+
         ¿Estás segura de que querés eliminar
-        <strong id="nombre-insumo-eliminar"></strong>?
+
+        <strong
+          id="nombre-insumo-eliminar"
+        ></strong>?
+
       </p>
 
       <div class="form__actions">
@@ -645,7 +884,10 @@
 
   </div>
 
-  <!-- Modal para registrar movimientos -->
+  <!-- =========================
+       MODAL MOVIMIENTOS
+  ========================== -->
+
   <div
     class="modal"
     id="modal-movimiento"
@@ -702,13 +944,19 @@
           </label>
 
           <div class="movement-product">
-            <strong id="movimiento-nombre-insumo">
+
+            <strong
+              id="movimiento-nombre-insumo"
+            >
               Insumo
             </strong>
 
-            <span id="movimiento-stock-actual">
+            <span
+              id="movimiento-stock-actual"
+            >
               Stock actual: —
             </span>
+
           </div>
 
         </div>
@@ -807,7 +1055,195 @@
 
   </div>
 
-  <!-- Toast -->
+  <!-- =========================
+       MODAL PERFIL
+  ========================== -->
+
+  <div
+    class="modal"
+    id="modal-perfil"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal__backdrop"
+      data-cerrar-perfil
+    ></div>
+
+    <section
+      class="modal__content modal__content--small"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-perfil"
+    >
+
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Cerrar perfil"
+        data-cerrar-perfil
+      >
+        ×
+      </button>
+
+      <div class="modal__header">
+
+        <h2 id="titulo-perfil">
+          Mi perfil
+        </h2>
+
+        <p>
+          Información de la administradora.
+        </p>
+
+      </div>
+
+      <div class="profile-card">
+
+        <div class="profile-card__avatar">
+          L
+        </div>
+
+        <div class="profile-card__info">
+
+          <div class="profile-card__row">
+
+            <span>
+              Nombre
+            </span>
+
+            <strong>
+              Lara
+            </strong>
+
+          </div>
+
+          <div class="profile-card__row">
+
+            <span>
+              Negocio
+            </span>
+
+            <strong>
+              Lara Pastelería
+            </strong>
+
+          </div>
+
+          <div class="profile-card__row">
+
+            <span>
+              Rol
+            </span>
+
+            <strong>
+              Administradora
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="form__actions">
+
+        <button
+          class="button button--primary"
+          type="button"
+          data-cerrar-perfil
+        >
+          Cerrar
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- =========================
+       MODAL ACERCA DEL SISTEMA
+  ========================== -->
+
+  <div
+    class="modal"
+    id="modal-acerca"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal__backdrop"
+      data-cerrar-acerca
+    ></div>
+
+    <section
+      class="modal__content modal__content--small"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-acerca"
+    >
+
+      <button
+        class="modal__close"
+        type="button"
+        aria-label="Cerrar información"
+        data-cerrar-acerca
+      >
+        ×
+      </button>
+
+      <div class="modal__header">
+
+        <h2 id="titulo-acerca">
+          Acerca de Lara Stock
+        </h2>
+
+        <p>
+          Sistema de gestión de inventario.
+        </p>
+
+      </div>
+
+      <div class="about-system">
+
+        <div class="about-system__icon">
+          📦
+        </div>
+
+        <p>
+          Lara Stock permite administrar los insumos de la
+          pastelería, controlar el stock disponible y registrar
+          entradas y salidas del inventario.
+        </p>
+
+        <p>
+          También incluye alertas de stock bajo, productos sin
+          stock e historial de movimientos.
+        </p>
+
+      </div>
+
+      <div class="form__actions">
+
+        <button
+          class="button button--primary"
+          type="button"
+          data-cerrar-acerca
+        >
+          Cerrar
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- =========================
+       TOAST
+  ========================== -->
+
   <div
     id="toast"
     class="toast"

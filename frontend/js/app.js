@@ -3,9 +3,15 @@ const SUMMARY_URL = `${API_URL}/resumen`;
 const MOVEMENTS_URL = "http://localhost:4000/api/movements";
 
 let insumos = [];
+let movimientos = [];
+
 let temporizadorBusqueda;
 let toastTimer;
 let idPendienteDeEliminacion = null;
+
+// ===============================
+// INSUMOS
+// ===============================
 
 const listaInsumos = document.querySelector("#lista-insumos");
 const mensajeVacio = document.querySelector("#mensaje-vacio");
@@ -13,9 +19,20 @@ const mensajeVacio = document.querySelector("#mensaje-vacio");
 const buscador = document.querySelector("#buscador");
 const filtroCategoria = document.querySelector("#filtro-categoria");
 
+// ===============================
+// NAVEGACIÓN
+// ===============================
+
 const botonInicio = document.querySelector("#nav-inicio");
 const botonInsumos = document.querySelector("#nav-insumos");
+const botonMovimientos = document.querySelector("#nav-movimientos");
+
 const seccionInsumos = document.querySelector("#seccion-insumos");
+const seccionMovimientos = document.querySelector("#seccion-movimientos");
+
+// ===============================
+// TARJETAS
+// ===============================
 
 const cardTotal = document.querySelector("#card-total");
 const cardStockBajo = document.querySelector("#card-stock-bajo");
@@ -24,6 +41,20 @@ const cardSinStock = document.querySelector("#card-sin-stock");
 const totalInsumos = document.querySelector("#total-insumos");
 const totalStockBajo = document.querySelector("#total-stock-bajo");
 const totalSinStock = document.querySelector("#total-sin-stock");
+
+// ===============================
+// HISTORIAL DE MOVIMIENTOS
+// ===============================
+
+const listaMovimientos = document.querySelector("#lista-movimientos");
+
+const mensajeMovimientosVacio = document.querySelector(
+  "#mensaje-movimientos-vacio"
+);
+
+const filtroTipoMovimiento = document.querySelector(
+  "#filtro-tipo-movimiento"
+);
 
 // ===============================
 // MODAL AGREGAR / EDITAR
@@ -65,7 +96,7 @@ const nombreInsumoEliminar = document.querySelector(
 );
 
 // ===============================
-// MODAL MOVIMIENTOS
+// MODAL MOVIMIENTO
 // ===============================
 
 const modalMovimiento = document.querySelector("#modal-movimiento");
@@ -122,6 +153,7 @@ function mostrarToast(mensaje, tipo = "success") {
   clearTimeout(toastTimer);
 
   toastMessage.textContent = mensaje;
+
   toastIcon.textContent =
     tipo === "success" ? "✅" : "⚠️";
 
@@ -142,7 +174,11 @@ function mostrarToast(mensaje, tipo = "success") {
 
   toastTimer = setTimeout(() => {
     toast.classList.remove("toast--visible");
-    toast.setAttribute("aria-hidden", "true");
+
+    toast.setAttribute(
+      "aria-hidden",
+      "true"
+    );
   }, 3000);
 }
 
@@ -154,14 +190,17 @@ function actualizarPasoCampos() {
   const esUnidad =
     inputUnidad.value === "unidades";
 
-  const paso = esUnidad ? "1" : "0.01";
+  const paso = esUnidad
+    ? "1"
+    : "0.01";
 
   inputCantidad.step = paso;
   inputStockMinimo.step = paso;
 }
 
 function actualizarPasoMovimiento(unidad) {
-  const esUnidad = unidad === "unidades";
+  const esUnidad =
+    unidad === "unidades";
 
   movimientoCantidad.step =
     esUnidad ? "1" : "0.01";
@@ -234,7 +273,8 @@ async function cargarInsumos(filtros = {}) {
       ? `${API_URL}?${queryString}`
       : API_URL;
 
-    const respuesta = await fetch(url);
+    const respuesta =
+      await fetch(url);
 
     if (!respuesta.ok) {
       throw new Error(
@@ -242,7 +282,8 @@ async function cargarInsumos(filtros = {}) {
       );
     }
 
-    insumos = await respuesta.json();
+    insumos =
+      await respuesta.json();
 
     renderizarInsumos(insumos);
 
@@ -349,7 +390,7 @@ function obtenerIconoCategoria(categoria) {
 }
 
 // ===============================
-// RENDER TABLA
+// RENDER TABLA DE INSUMOS
 // ===============================
 
 function renderizarInsumos(lista) {
@@ -427,12 +468,14 @@ function renderizarInsumos(lista) {
       </td>
     `;
 
-    listaInsumos.appendChild(fila);
+    listaInsumos.appendChild(
+      fila
+    );
   });
 }
 
 // ===============================
-// FILTROS
+// FILTROS DE INSUMOS
 // ===============================
 
 async function filtrarInsumos() {
@@ -449,19 +492,212 @@ async function filtrarInsumos() {
     categoria,
   });
 }
+// ===============================
+// HISTORIAL DE MOVIMIENTOS
+// ===============================
+
+function formatearFecha(fecha) {
+  const fechaMovimiento =
+    new Date(fecha);
+
+  if (
+    Number.isNaN(
+      fechaMovimiento.getTime()
+    )
+  ) {
+    return "—";
+  }
+
+  return fechaMovimiento.toLocaleString(
+    "es-AR",
+    {
+      dateStyle: "short",
+      timeStyle: "short",
+    }
+  );
+}
+
+function obtenerInsumoPorId(
+  itemId,
+  listaCompleta
+) {
+  return listaCompleta.find(
+    (item) =>
+      String(item.id) ===
+      String(itemId)
+  );
+}
+
+function renderizarMovimientos(
+  lista,
+  listaCompletaInsumos
+) {
+  listaMovimientos.innerHTML = "";
+
+  if (lista.length === 0) {
+    mensajeMovimientosVacio.hidden =
+      false;
+
+    return;
+  }
+
+  mensajeMovimientosVacio.hidden =
+    true;
+
+  lista.forEach((movimiento) => {
+    const insumo =
+      obtenerInsumoPorId(
+        movimiento.itemId,
+        listaCompletaInsumos
+      );
+
+    const nombreInsumo =
+      insumo?.nombre ||
+      "Insumo eliminado";
+
+    const unidad =
+      insumo?.unidad || "";
+
+    const esEntrada =
+      movimiento.tipo === "entrada";
+
+    const textoTipo =
+      esEntrada
+        ? "↑ Entrada"
+        : "↓ Salida";
+
+    const claseTipo =
+      esEntrada
+        ? "movement-badge--entry"
+        : "movement-badge--exit";
+
+    const motivo =
+      movimiento.motivo ||
+      "Sin motivo";
+
+    const fila =
+      document.createElement("tr");
+
+    fila.innerHTML = `
+      <td>
+        ${formatearFecha(
+          movimiento.fecha
+        )}
+      </td>
+
+      <td>
+        <strong>
+          ${nombreInsumo}
+        </strong>
+      </td>
+
+      <td>
+        <span
+          class="movement-badge ${claseTipo}"
+        >
+          ${textoTipo}
+        </span>
+      </td>
+
+      <td>
+        ${movimiento.cantidad}
+        ${unidad}
+      </td>
+
+      <td>
+        ${motivo}
+      </td>
+    `;
+
+    listaMovimientos.appendChild(
+      fila
+    );
+  });
+}
+
+async function cargarMovimientos() {
+  try {
+    const [
+      respuestaMovimientos,
+      respuestaInsumos,
+    ] = await Promise.all([
+      fetch(MOVEMENTS_URL),
+      fetch(API_URL),
+    ]);
+
+    if (
+      !respuestaMovimientos.ok ||
+      !respuestaInsumos.ok
+    ) {
+      throw new Error(
+        "No se pudo cargar el historial"
+      );
+    }
+
+    movimientos =
+      await respuestaMovimientos.json();
+
+    const listaCompletaInsumos =
+      await respuestaInsumos.json();
+
+    movimientos.sort(
+      (a, b) =>
+        new Date(b.fecha) -
+        new Date(a.fecha)
+    );
+
+    const tipoSeleccionado =
+      filtroTipoMovimiento.value;
+
+    const movimientosFiltrados =
+      tipoSeleccionado === "todos"
+        ? movimientos
+        : movimientos.filter(
+            (movimiento) =>
+              movimiento.tipo ===
+              tipoSeleccionado
+          );
+
+    renderizarMovimientos(
+      movimientosFiltrados,
+      listaCompletaInsumos
+    );
+  } catch (error) {
+    console.error(error);
+
+    listaMovimientos.innerHTML = `
+      <tr>
+        <td colspan="5">
+          No se pudo cargar el historial de movimientos.
+        </td>
+      </tr>
+    `;
+
+    mostrarToast(
+      "No se pudo cargar el historial",
+      "error"
+    );
+  }
+}
+
+async function filtrarMovimientos() {
+  await cargarMovimientos();
+}
 
 // ===============================
 // NAVEGACIÓN
 // ===============================
 
 function activarMenu(botonActivo) {
-  botonInicio.classList.remove(
-    "nav-link--active"
-  );
-
-  botonInsumos.classList.remove(
-    "nav-link--active"
-  );
+  [
+    botonInicio,
+    botonInsumos,
+    botonMovimientos,
+  ].forEach((boton) => {
+    boton.classList.remove(
+      "nav-link--active"
+    );
+  });
 
   botonActivo.classList.add(
     "nav-link--active"
@@ -470,10 +706,15 @@ function activarMenu(botonActivo) {
 
 async function mostrarTodosLosInsumos() {
   buscador.value = "";
-  filtroCategoria.value = "todas";
+
+  filtroCategoria.value =
+    "todas";
 
   activarTarjeta(cardTotal);
-  activarMenu(botonInsumos);
+
+  activarMenu(
+    botonInsumos
+  );
 
   await cargarInsumos();
 
@@ -485,10 +726,17 @@ async function mostrarTodosLosInsumos() {
 
 async function mostrarStockBajo() {
   buscador.value = "";
-  filtroCategoria.value = "todas";
 
-  activarTarjeta(cardStockBajo);
-  activarMenu(botonInsumos);
+  filtroCategoria.value =
+    "todas";
+
+  activarTarjeta(
+    cardStockBajo
+  );
+
+  activarMenu(
+    botonInsumos
+  );
 
   await cargarInsumos({
     stock: "bajo",
@@ -502,10 +750,17 @@ async function mostrarStockBajo() {
 
 async function mostrarSinStock() {
   buscador.value = "";
-  filtroCategoria.value = "todas";
 
-  activarTarjeta(cardSinStock);
-  activarMenu(botonInsumos);
+  filtroCategoria.value =
+    "todas";
+
+  activarTarjeta(
+    cardSinStock
+  );
+
+  activarMenu(
+    botonInsumos
+  );
 
   await cargarInsumos({
     stock: "agotado",
@@ -519,7 +774,9 @@ async function mostrarSinStock() {
 
 async function volverAlInicio() {
   buscador.value = "";
-  filtroCategoria.value = "todas";
+
+  filtroCategoria.value =
+    "todas";
 
   limpiarTarjetasActivas();
 
@@ -530,7 +787,9 @@ async function volverAlInicio() {
     behavior: "smooth",
   });
 
-  activarMenu(botonInicio);
+  activarMenu(
+    botonInicio
+  );
 }
 
 function irAInsumos() {
@@ -539,7 +798,22 @@ function irAInsumos() {
     block: "start",
   });
 
-  activarMenu(botonInsumos);
+  activarMenu(
+    botonInsumos
+  );
+}
+
+async function irAMovimientos() {
+  await cargarMovimientos();
+
+  seccionMovimientos.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+
+  activarMenu(
+    botonMovimientos
+  );
 }
 
 // ===============================
@@ -548,6 +822,7 @@ function irAInsumos() {
 
 function abrirModal(insumo = null) {
   formulario.reset();
+
   inputId.value = "";
 
   if (insumo) {
@@ -601,6 +876,7 @@ function cerrarModal() {
   );
 
   formulario.reset();
+
   inputId.value = "";
 }
 
@@ -653,9 +929,11 @@ function cerrarModalEliminar() {
     "true"
   );
 
-  idPendienteDeEliminacion = null;
+  idPendienteDeEliminacion =
+    null;
 
-  nombreInsumoEliminar.textContent = "";
+  nombreInsumoEliminar.textContent =
+    "";
 }
 
 // ===============================
@@ -740,7 +1018,8 @@ function cerrarModalMovimiento() {
 async function guardarInsumo(evento) {
   evento.preventDefault();
 
-  const id = inputId.value;
+  const id =
+    inputId.value;
 
   const datosInsumo = {
     nombre:
@@ -750,7 +1029,9 @@ async function guardarInsumo(evento) {
       inputCategoria.value,
 
     cantidad:
-      Number(inputCantidad.value),
+      Number(
+        inputCantidad.value
+      ),
 
     unidad:
       inputUnidad.value,
@@ -834,16 +1115,19 @@ function editarInsumo(id) {
     );
 
   if (insumoEncontrado) {
-    abrirModal(insumoEncontrado);
+    abrirModal(
+      insumoEncontrado
+    );
   }
 }
-
 // ===============================
 // CONFIRMAR ELIMINACIÓN
 // ===============================
 
 async function confirmarEliminacion() {
-  if (!idPendienteDeEliminacion) {
+  if (
+    !idPendienteDeEliminacion
+  ) {
     return;
   }
 
@@ -878,6 +1162,8 @@ async function confirmarEliminacion() {
     cerrarModalEliminar();
 
     await filtrarInsumos();
+
+    await cargarMovimientos();
 
     mostrarToast(
       "Insumo eliminado correctamente"
@@ -1027,6 +1313,8 @@ async function registrarMovimiento(evento) {
 
     await filtrarInsumos();
 
+    await cargarMovimientos();
+
     mostrarToast(
       tipo === "entrada"
         ? "Entrada registrada correctamente"
@@ -1049,7 +1337,180 @@ async function registrarMovimiento(evento) {
 }
 
 // ===============================
-// EVENTOS
+// USUARIO LARA
+// ===============================
+
+const botonUsuario =
+  document.querySelector(
+    "#boton-usuario"
+  );
+
+const menuUsuario =
+  document.querySelector(
+    "#menu-usuario"
+  );
+
+const botonAbrirPerfil =
+  document.querySelector(
+    "#abrir-perfil"
+  );
+
+const botonAbrirAcerca =
+  document.querySelector(
+    "#abrir-acerca"
+  );
+
+const modalPerfil =
+  document.querySelector(
+    "#modal-perfil"
+  );
+
+const modalAcerca =
+  document.querySelector(
+    "#modal-acerca"
+  );
+
+const botonesCerrarPerfil =
+  document.querySelectorAll(
+    "[data-cerrar-perfil]"
+  );
+
+const botonesCerrarAcerca =
+  document.querySelectorAll(
+    "[data-cerrar-acerca]"
+  );
+
+// ===============================
+// MENÚ DESPLEGABLE
+// ===============================
+
+function abrirMenuUsuario() {
+  menuUsuario.classList.add(
+    "user-dropdown--open"
+  );
+
+  menuUsuario.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  botonUsuario.setAttribute(
+    "aria-expanded",
+    "true"
+  );
+}
+
+function cerrarMenuUsuario() {
+  if (
+    menuUsuario.contains(
+      document.activeElement
+    )
+  ) {
+    botonUsuario.focus();
+  }
+
+  menuUsuario.classList.remove(
+    "user-dropdown--open"
+  );
+
+  menuUsuario.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  botonUsuario.setAttribute(
+    "aria-expanded",
+    "false"
+  );
+}
+
+function alternarMenuUsuario() {
+  const estaAbierto =
+    menuUsuario.classList.contains(
+      "user-dropdown--open"
+    );
+
+  if (estaAbierto) {
+    cerrarMenuUsuario();
+  } else {
+    abrirMenuUsuario();
+  }
+}
+
+// ===============================
+// MODAL PERFIL
+// ===============================
+
+function abrirModalPerfil() {
+  cerrarMenuUsuario();
+
+  modalPerfil.classList.add(
+    "modal--open"
+  );
+
+  modalPerfil.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+}
+
+function cerrarModalPerfil() {
+  if (
+    modalPerfil.contains(
+      document.activeElement
+    )
+  ) {
+    botonUsuario.focus();
+  }
+
+  modalPerfil.classList.remove(
+    "modal--open"
+  );
+
+  modalPerfil.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+}
+
+// ===============================
+// MODAL ACERCA DEL SISTEMA
+// ===============================
+
+function abrirModalAcerca() {
+  cerrarMenuUsuario();
+
+  modalAcerca.classList.add(
+    "modal--open"
+  );
+
+  modalAcerca.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+}
+
+function cerrarModalAcerca() {
+  if (
+    modalAcerca.contains(
+      document.activeElement
+    )
+  ) {
+    botonUsuario.focus();
+  }
+
+  modalAcerca.classList.remove(
+    "modal--open"
+  );
+
+  modalAcerca.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+}
+
+// ===============================
+// EVENTOS DE NAVEGACIÓN
 // ===============================
 
 botonInicio.addEventListener(
@@ -1061,6 +1522,15 @@ botonInsumos.addEventListener(
   "click",
   irAInsumos
 );
+
+botonMovimientos.addEventListener(
+  "click",
+  irAMovimientos
+);
+
+// ===============================
+// EVENTOS TARJETAS
+// ===============================
 
 cardTotal.addEventListener(
   "click",
@@ -1076,6 +1546,10 @@ cardSinStock.addEventListener(
   "click",
   mostrarSinStock
 );
+
+// ===============================
+// EVENTOS MODAL INSUMOS
+// ===============================
 
 botonAbrirModal.addEventListener(
   "click",
@@ -1093,6 +1567,10 @@ botonesCerrarModal.forEach(
   }
 );
 
+// ===============================
+// EVENTOS MODAL ELIMINAR
+// ===============================
+
 botonesCerrarEliminar.forEach(
   (boton) => {
     boton.addEventListener(
@@ -1101,6 +1579,15 @@ botonesCerrarEliminar.forEach(
     );
   }
 );
+
+botonConfirmarEliminar.addEventListener(
+  "click",
+  confirmarEliminacion
+);
+
+// ===============================
+// EVENTOS MODAL MOVIMIENTO
+// ===============================
 
 botonesCerrarMovimiento.forEach(
   (boton) => {
@@ -1111,10 +1598,9 @@ botonesCerrarMovimiento.forEach(
   }
 );
 
-botonConfirmarEliminar.addEventListener(
-  "click",
-  confirmarEliminacion
-);
+// ===============================
+// FORMULARIOS
+// ===============================
 
 formulario.addEventListener(
   "submit",
@@ -1126,10 +1612,18 @@ formularioMovimiento.addEventListener(
   registrarMovimiento
 );
 
+// ===============================
+// UNIDAD
+// ===============================
+
 inputUnidad.addEventListener(
   "change",
   actualizarPasoCampos
 );
+
+// ===============================
+// BUSCADOR
+// ===============================
 
 buscador.addEventListener(
   "input",
@@ -1145,10 +1639,23 @@ buscador.addEventListener(
   }
 );
 
+// ===============================
+// FILTROS
+// ===============================
+
 filtroCategoria.addEventListener(
   "change",
   filtrarInsumos
 );
+
+filtroTipoMovimiento.addEventListener(
+  "change",
+  filtrarMovimientos
+);
+
+// ===============================
+// ACCIONES DE LA TABLA
+// ===============================
 
 listaInsumos.addEventListener(
   "click",
@@ -1189,13 +1696,91 @@ listaInsumos.addEventListener(
 );
 
 // ===============================
+// EVENTOS DEL USUARIO
+// ===============================
+
+botonUsuario.addEventListener(
+  "click",
+  (evento) => {
+    evento.stopPropagation();
+
+    alternarMenuUsuario();
+  }
+);
+
+menuUsuario.addEventListener(
+  "click",
+  (evento) => {
+    evento.stopPropagation();
+  }
+);
+
+botonAbrirPerfil.addEventListener(
+  "click",
+  abrirModalPerfil
+);
+
+botonAbrirAcerca.addEventListener(
+  "click",
+  abrirModalAcerca
+);
+
+botonesCerrarPerfil.forEach(
+  (boton) => {
+    boton.addEventListener(
+      "click",
+      cerrarModalPerfil
+    );
+  }
+);
+
+botonesCerrarAcerca.forEach(
+  (boton) => {
+    boton.addEventListener(
+      "click",
+      cerrarModalAcerca
+    );
+  }
+);
+
+// Cierra el menú de Lara
+// cuando se hace click afuera.
+
+document.addEventListener(
+  "click",
+  () => {
+    cerrarMenuUsuario();
+  }
+);
+
+// ===============================
 // ESCAPE
 // ===============================
 
 document.addEventListener(
   "keydown",
   (evento) => {
-    if (evento.key !== "Escape") {
+    if (
+      evento.key !== "Escape"
+    ) {
+      return;
+    }
+
+    if (
+      modalPerfil.classList.contains(
+        "modal--open"
+      )
+    ) {
+      cerrarModalPerfil();
+      return;
+    }
+
+    if (
+      modalAcerca.classList.contains(
+        "modal--open"
+      )
+    ) {
+      cerrarModalAcerca();
       return;
     }
 
@@ -1223,6 +1808,15 @@ document.addEventListener(
       )
     ) {
       cerrarModal();
+      return;
+    }
+
+    if (
+      menuUsuario.classList.contains(
+        "user-dropdown--open"
+      )
+    ) {
+      cerrarMenuUsuario();
     }
   }
 );
@@ -1231,4 +1825,9 @@ document.addEventListener(
 // INICIO
 // ===============================
 
-cargarInsumos();
+async function iniciarAplicacion() {
+  await cargarInsumos();
+  await cargarMovimientos();
+}
+
+iniciarAplicacion();
